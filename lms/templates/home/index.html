@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block pagetitle %}
+     Learner Management System
+{% endblock %}
+
+{% block content %}
+    <h1> Home page</h1>
+    <p> We are at the default home page </p>
+    {% for user in users %}
+        <p> {{ user.firstname }} {{ user.secondname }} </p>
+    {% endfor %}
+{% endblock %}
