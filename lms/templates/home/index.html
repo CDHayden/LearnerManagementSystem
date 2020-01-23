@@ -1,12 +1,39 @@
 {% extends 'base.html' %}
 {% block pagetitle %}
-     Learner Management System
+Learner Management System
 {% endblock %}
 
 {% block content %}
-    <h1> Home page</h1>
-    <p> We are at the default home page </p>
-    {% for user in users %}
-        <p> {{ user.firstname }} {{ user.secondname }} </p>
-    {% endfor %}
+
+<div class="row">
+    <div id="test" class="col col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card">
+            <div class="card-title text-center">
+                Sign in
+            </div>
+            <div class="card-body">
+                <form>
+                    <!-- USERNAME -->
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" placeholder="username" required autofocus>
+                    </div>
+                    <!-- ./USERNAME -->
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" placeholder="password" required>
+                    </div>
+                    <!-- ./PASSWORD -->
+
+                    <!-- BUTTON -->
+                    <button class="btn btn-primary text-uppercase" type="submit"> Sign in </button>
+                    <!-- ./BUTTON -->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
