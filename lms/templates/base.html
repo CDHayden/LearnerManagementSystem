@@ -14,7 +14,11 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        {% block menu %}
+        {% endblock %}
+    </div>
+    <div class="container-fluid">
         {% block content %}
         {% endblock %}
     </div>
