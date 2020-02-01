@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block optional_includes %}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/student/style.css')}}">
+{% endblock %}
+
+{% block pagetitle %}
+Learner Management System - Students
+{% endblock %}
+
+
+{% block menu %}
+<!-- Nav bar code taken from Boostrap documentation. https://getbootstrap.com/docs/4.4/components/navbar/ -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="#">LMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeMenuContent"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="homeMenuContent">
+        <ol class="navbar-nav" id="menuList">
+            <li class="nav-item" id="profileLink">
+                <a class="nav-link" href="/student/">Profile</a>
+            </li>
+
+            <li class="nav-item" id="classesLink">
+                <a href="/student/classes" class="nav-link">My classes</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">Sign out</a>
+            </li>
+        </ol>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
