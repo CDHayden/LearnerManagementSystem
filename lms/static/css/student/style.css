@@ -1,0 +1,18 @@
+/*
+    STUDENT INDEX
+*/
+
+.profile-image {
+    margin: 0;
+    padding: 0;
+}
+
+.profile-name {
+    margin: 0;
+    padding: 0;
+}
+
+.design-mode {
+    border: 1px solid #000000;
+    background-color: red;
+}
