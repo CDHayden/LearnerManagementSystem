@@ -1,0 +1,21 @@
+{% extends '/student/studentbase.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-sm-10 offset-sm-2 design-mode">
+        <p><strong> About here </strong></p>
+        <ul>
+            {% for class in student.classes %}
+            <li> {{ class.name }} - {{class.grade}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        selectActiveMenuItem('classesLink','active');
+    });
+</script>
+
+{% endblock %}
