@@ -38,7 +38,11 @@
 
     <!-- MAIN CONTENT-->
     <div class="col-12 col-sm-8" id="classContent">
-        <h3> test </h3>
+        <h3 id="className"> test </h3>
+        <p id="grade"></p>
+        <p id="startTime"></p>
+        <p id="finishTime"></p>
+        <o id="attendance"></p>
     </div>
     <!-- ./MAIN CONTENT -->
 </div>
@@ -50,6 +54,26 @@
 <script>
     $(document).ready(function () {
         selectActiveMenuItem('classesLink', 'active');
+    });
+
+    /*
+* When a hyperlink with .class-content-link is clicked
+*/
+    $(function () {
+        $('a.class-content-link').bind('click', function () {
+            let clicked_class = $(this).text();
+
+            $.getJSON('/student/_load_class_content', {
+                selected_class: clicked_class
+            }, function (data) {
+                $('#className').text(data.class_name);
+                $('#grade').text(data.grade);
+                $('#startTime').text(data.start_time);
+                $('#finishTime').text(data.finish_time);
+                $('#attendance').text(data.attendance);
+            });
+            return false;
+        });
     });
 </script>
 {% endblock %}

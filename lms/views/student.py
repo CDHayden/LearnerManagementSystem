@@ -18,11 +18,11 @@ def get_subjects_classes(student):
     student -- The student you want subject and class information of
     """
     subjects_classes = {}
-    for current_class in student['classes']:
-        subject = get_class_subject(current_class['name'])
+    for class_name in student['classes'].keys():
+        subject = get_class_subject(class_name)
         if subject not in subjects_classes:
             subjects_classes[subject] = []
-        subjects_classes[subject].append(current_class['name'])
+        subjects_classes[subject].append(class_name)
     return subjects_classes
 
 
@@ -43,5 +43,12 @@ def student_classes():
 
 @mod.route('/_load_class_content')
 def load_class_content():
-    selected_class = request.args.get('selected_class', "", type=str)
-    return jsonify(result=selected_class + " worked")
+    student = mongo.db.users.find_one({'forename': 'Chris'})
+    class_name = request.args.get('selected_class', "", type=str)
+    selected_class = student['classes'].get(class_name.strip())
+    return jsonify(class_name=class_name.strip(),
+                   grade=selected_class.get('grade'),
+                   day=selected_class.get('day'),
+                   start_time=selected_class.get('start_time'),
+                   finish_time=selected_class.get('finish_time'),
+                   attendance=selected_class.get('attendance'))
