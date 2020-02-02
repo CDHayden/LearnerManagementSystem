@@ -1,6 +1,6 @@
-/*
-    STUDENT INDEX
-*/
+/***********************************************************
+ *                       STUDENT/                          *
+ ***********************************************************/
 
 .profile-image {
     margin: 0;
@@ -15,4 +15,27 @@
 .design-mode {
     border: 1px solid #000000;
     background-color: red;
+}
+
+.card {
+    max-width: 18rem;
+}
+
+/***********************************************************
+ *                 STUDENT/CLASSES                         *
+ ***********************************************************/
+
+ /***** SIDE MENU *****/
+
+ #sidemenu {
+    padding-left: 0;
+}
+
+
+#sidemenu div.card-body {
+/* Need to remove padding from element being collapsed to prevent jerky
+ * animation. 
+ *See: https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-smooth
+ */
+    padding: 0;
 }
