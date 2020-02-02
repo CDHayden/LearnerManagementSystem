@@ -2,20 +2,54 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-12 col-sm-10 offset-sm-2 design-mode">
-        <p><strong> About here </strong></p>
-        <ul>
-            {% for class in student.classes %}
-            <li> {{ class.name }} - {{class.grade}} </li>
-            {% endfor %}
-        </ul>
+
+    <!-- PAGE HEADER -->
+    <div class="col-12 design-mode">
+        <p><strong> {{student.forename}}'s classes </strong></p>
     </div>
+    <!-- ./ PAGE HEADER -->
+
+    <!-- SIDE MENU -->
+    <div id="sidemenu" class="col-12 col-sm-4">
+        {% for item in menu_items %}
+        <div class="card">
+            <div class="card-header text-center">
+                <button class="btn btn-link" id="heading{{loop.index}}" data-toggle="collapse"
+                    data-target="#collapse{{loop.index}}" aria-expanded="true" aria-controls="collapse{{loop.index}}">
+                    <h5>{{item}}</h5>
+                </button>
+
+            </div>
+            <div id="collapse{{loop.index}}" class="card-body collapse show" aria-labelledby="heading{{loop.index}}">
+                <ul>
+                    {% if menu_items[item] | length > 1 %}
+                    <li><a href="#" class="class-content-link"> {{item}} summary </a></li>
+                    {% endif %}
+
+                    {% for link in menu_items[item] %}
+                    <li><a href="/student/classes/{{link}}"> {{link}} </a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- ./SIDE MENU-->
+
+    <!-- MAIN CONTENT-->
+    <div class="class-content col-12 col-sm-8">
+        <h3> test </h3>
+    </div>
+    <!-- ./MAIN CONTENT -->
 </div>
 
+{% endblock %}
+
+
+{% block late_optional_includes %}
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
         selectActiveMenuItem('classesLink','active');
     });
 </script>
-
 {% endblock %}
