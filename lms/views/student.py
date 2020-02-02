@@ -5,25 +5,41 @@ from database import mongo
 mod = Blueprint("student", __name__)
 
 
+def get_class_grade(student, class_name):
+    """Return student's grade for class_name"""
+    grade = student['classes'].get(class_name).get('grade')
+    return (class_name, grade)
+
+
 def get_class_subject(class_name):
     """Return the subject that class_name belongs to"""
     selected_class = mongo.db.classes.find_one({'name': class_name})
     return selected_class['subject']
 
 
-def get_subjects_classes(student):
+def get_subjects_classes(student, subject="all"):
     """Return a dict of subjects and their classes for given student
 
     Keyword arguements:
     student -- The student you want subject and class information of
+    subject -- Specific classes from a single subject. Default is all.
     """
     subjects_classes = {}
     for class_name in student['classes'].keys():
-        subject = get_class_subject(class_name)
-        if subject not in subjects_classes:
-            subjects_classes[subject] = []
-        subjects_classes[subject].append(class_name)
+        selected_subject = get_class_subject(class_name)
+        if subject == "all" or subject == selected_subject:
+            if selected_subject not in subjects_classes:
+                subjects_classes[selected_subject] = []
+            subjects_classes[selected_subject].append(class_name)
+
     return subjects_classes
+
+
+def get_average_grade(grades):
+    total = 0
+    for grade in grades:
+        total += grade[1]
+    return total / len(grades)
 
 
 @mod.route('/')
@@ -52,3 +68,14 @@ def load_class_content():
                    start_time=selected_class.get('start_time'),
                    finish_time=selected_class.get('finish_time'),
                    attendance=selected_class.get('attendance'))
+
+
+@mod.route('/_load_subject_content')
+def load_subject_content():
+    student = mongo.db.users.find_one({'forename': 'Chris'})
+    subject = request.args.get('subject', "", type=str).strip()
+    student_classes = get_subjects_classes(student, subject)
+    grades = [get_class_grade(student, current_class)
+              for current_class in student_classes.get(subject)]
+    average_grade = get_average_grade(grades)
+    return jsonify(grades=grades, average_grade=average_grade)

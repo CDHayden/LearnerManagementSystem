@@ -23,11 +23,11 @@
             <div id="collapse{{loop.index}}" class="card-body collapse show" aria-labelledby="heading{{loop.index}}">
                 <ul>
                     {% if menu_items[item] | length > 1 %}
-                    <li><a href="#" class="class-content-link"> {{item}} summary </a></li>
+                    <li><a href="{{item}}" class="class-content-link"> {{item}} summary </a></li>
                     {% endif %}
 
                     {% for link in menu_items[item] %}
-                    <li><a href="#" class="class-content-link"> {{link}} </a></li>
+                    <li><a href="{{item}}" class="class-content-link"> {{link}} </a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -38,11 +38,6 @@
 
     <!-- MAIN CONTENT-->
     <div class="col-12 col-sm-8" id="classContent">
-        <h3 id="className"> test </h3>
-        <p id="grade"></p>
-        <p id="startTime"></p>
-        <p id="finishTime"></p>
-        <o id="attendance"></p>
     </div>
     <!-- ./MAIN CONTENT -->
 </div>
@@ -57,21 +52,52 @@
     });
 
     /*
-* When a hyperlink with .class-content-link is clicked
-*/
+    * When a hyperlink with .class-content-link is clicked
+    */
     $(function () {
         $('a.class-content-link').bind('click', function () {
-            let clicked_class = $(this).text();
 
-            $.getJSON('/student/_load_class_content', {
-                selected_class: clicked_class
-            }, function (data) {
-                $('#className').text(data.class_name);
-                $('#grade').text(data.grade);
-                $('#startTime').text(data.start_time);
-                $('#finishTime').text(data.finish_time);
-                $('#attendance').text(data.attendance);
-            });
+            let clicked_elem = $(this)
+            let clicked_class = clicked_elem.text().trim();
+
+            $('#classContent').empty();
+
+            //If the text from the link clicked includes summary
+            //Load the subject overview
+            if (clicked_class.split(" ").includes("summary")) {
+                $.getJSON('/student/_load_subject_content', {
+                    subject: clicked_class.split(" ")[0]
+                }, function (data) {
+                    let subjectName = $("<h4></h4>").text(clicked_elem.attr('href'));
+                    let totalClasses = $("<p id='totalClasses'></p>").text(data.grades.length);
+                    let averageGrade = $("<p id='averageGrade'></p>").text(data.average_grade);
+
+                    $('#classContent').append(subjectName,
+                        totalClasses,
+                        averageGrade);
+                });
+            }
+            //Otherwise load in class overview
+            else {
+                $.getJSON('/student/_load_class_content', {
+                    selected_class: clicked_class
+                }, function (data) {
+                    let subjectName = $("<h4></h4>").text(clicked_elem.attr('href'));
+                    let className = $("<h5></h5>").text(data.class_name);
+                    let classGrade = $("<p id='classGrade'></p>").text(data.grade);
+                    let classStartTime = $("<p id='classStartTime'></p>").text(data.start_time);
+                    let classEndTime = $("<p id='classEndTime'></p>").text(data.finish_time);
+                    let classAttendance = $("<p id='classAttendance'></p>").text(data.attendance);
+
+                    $('#classContent').append(subjectName,
+                        className,
+                        classGrade,
+                        classStartTime,
+                        classEndTime,
+                        classAttendance)
+                });
+            }
+
             return false;
         });
     });
