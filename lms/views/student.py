@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, request
 
 from database import mongo
 
@@ -41,5 +41,7 @@ def student_classes():
                            menu_items=menu_items)
 
 
-# @mod.route('/classes/<class_name>')
-# def class_content(class_name):
+@mod.route('/_load_class_content')
+def load_class_content():
+    selected_class = request.args.get('selected_class', "", type=str)
+    return jsonify(result=selected_class + " worked")

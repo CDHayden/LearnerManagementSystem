@@ -21,3 +21,19 @@ function selectActiveMenuItem(elementId, className) {
         }
     });
 }
+
+/*
+* When a hyperlink with .class-content-link is clicked
+*/
+$(function () {
+    $('a.class-content-link').bind('click', function () {
+        let clicked_class = $(this).text();
+
+        $.getJSON('/student/_load_class_content', {
+            selected_class: clicked_class
+        }, function (data) {
+            $('#classContent').text(data.result);
+        });
+        return false;
+    });
+});

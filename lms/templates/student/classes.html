@@ -27,7 +27,7 @@
                     {% endif %}
 
                     {% for link in menu_items[item] %}
-                    <li><a href="/student/classes/{{link}}"> {{link}} </a></li>
+                    <li><a href="#" class="class-content-link"> {{link}} </a></li>
                     {% endfor %}
                 </ul>
             </div>
@@ -37,7 +37,7 @@
     <!-- ./SIDE MENU-->
 
     <!-- MAIN CONTENT-->
-    <div class="class-content col-12 col-sm-8">
+    <div class="col-12 col-sm-8" id="classContent">
         <h3> test </h3>
     </div>
     <!-- ./MAIN CONTENT -->
@@ -49,7 +49,7 @@
 {% block late_optional_includes %}
 <script>
     $(document).ready(function () {
-        selectActiveMenuItem('classesLink','active');
+        selectActiveMenuItem('classesLink', 'active');
     });
 </script>
 {% endblock %}
