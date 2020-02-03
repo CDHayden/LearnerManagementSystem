@@ -56,11 +56,11 @@
     */
     $(function () {
         $('a.class-content-link').bind('click', function () {
+            $('#classContent').empty();
 
             let clicked_elem = $(this)
             let clicked_class = clicked_elem.text().trim();
 
-            $('#classContent').empty();
 
             //If the text from the link clicked includes summary
             //Load the subject overview
