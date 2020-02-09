@@ -1,20 +1,121 @@
+:root {
+/*
+ **** COLOUR VARIABLES
+ */
+    --main-white-colour: hsl(0, 0%, 100%);
+    --main-purple-colour: hsl(288, 78.5%, 31.0%);
+
+    --light-purple-colour: hsl(288, 41%, 39%);
+    --dark-purple-colour: hsl(288, 78%, 24%);
+
+    --dark-opaque-overlay: hsla(0, 0%, 0%, 0.5);
+    --light-opaque-overlay: hsla(0,0%,100%,0.5);
+
+    --light-green-highlight: hsl(159, 86.9%, 39.0%);
+    --lighest-green-highlight: hsl(159, 100.0%, 95.0%);
+}
+
+body {
+    background-color: var(--main-white-colour);
+    color: var(--main-purple-colour);
+}
+
 /***********************************************************
  *                       STUDENT/                          *
  ***********************************************************/
 
-.profile-image {
-    margin: 0;
-    padding: 0;
+/* ***************** PROFILE
+
+/*
+ **** EDIT PROFILE LINK
+ */
+ #edit-profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+ }
+
+ #edit-profile > a{
+     color: var(--light-purple-colour);
+     letter-spacing: 0.1rem;
+     font-weight: 480;
+     text-decoration: none;
+     transition: letter-spacing .5s;
+ }
+
+ #edit-profile > a > i{
+    color:  hsla(288, 41%, 39%,0.5);
+ }
+
+#edit-profile > a::before{
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color:var(--light-green-highlight);
+    transition: all .3s;
 }
 
-.profile-name {
-    margin: 0;
-    padding: 0;
+#edit-profile > a:hover{
+    letter-spacing: initial;
+    font-weight: 500;
 }
 
-.design-mode {
-    border: 1px solid #000000;
-    background-color: red;
+#edit-profile > a:hover::before{
+    width: 100%;
+}
+
+
+/*
+ ****   PROFILE IMAGE
+ */
+#profile-image>img {
+    display: block;
+    position: relative;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    width: 8.929rem;
+    height: auto;
+    box-shadow: 0 0.1rem 1rem var(--dark-opaque-overlay),
+                0 -0.5rem 3rem var(--dark-opaque-overlay), 
+                0 0.5rem 0 1rem var(--main-white-colour);
+}
+
+#profile-image-bg {
+    margin-top: -5rem;
+    background-color: var(--light-purple-colour);
+    background: linear-gradient(180deg, var(--dark-purple-colour),
+                                var(--light-purple-colour));
+    min-height: 1.5rem;
+    z-index: -1;
+}
+
+/*
+ **** PROFILE NAME
+ */
+
+#profile-name {
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--dark-purple-colour);
+    background: linear-gradient(180deg, var(--light-purple-colour),
+                             var(--dark-purple-colour));
+    z-index: -1;
+    color: var(--main-white-colour);
+}
+
+#profile-name>h1 {
+    font-weight: 650;
+    /* font-size: 3rem; */
+}
+
+#profile-about {
+    color: var(--dark-purple-colour);
+    padding-top: 1rem;
 }
 
 .card {
@@ -25,15 +126,14 @@
  *                 STUDENT/CLASSES                         *
  ***********************************************************/
 
- /***** SIDE MENU *****/
+/***** SIDE MENU *****/
 
- #sidemenu {
+#sidemenu {
     padding-left: 0;
 }
 
-
 #sidemenu div.card-body {
-/* Need to remove padding from element being collapsed to prevent jerky
+    /* Need to remove padding from element being collapsed to prevent jerky
  * animation. 
  *See: https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-smooth
  */

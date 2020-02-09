@@ -3,12 +3,25 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-12 col-sm-2 profile-image design-mode">
-        <p><strong>Image here</strong></p>
+    <div class="col-12" id="edit-profile">
+        <a href="#"><i class="far fa-edit"></i> Edit profile </a>
     </div>
 
-    <div class="col-12 col-sm-10 profile-name design-mode">
-        <h3> {{student.forename}} {{student.surname}} </h3>
+    <div class="col-12" id="profile-image">
+        <img src="http://placeimg.com/200/200/people" alt="profile picture">
+    </div>
+
+    <div class="col-12" id="profile-image-bg">
+
+    </div>
+
+    <div class="col-12" id="profile-name">
+        <h1> {{student.forename}} {{student.surname}} </h1>
+    </div>
+
+    <div class="col-12" id="profile-about">
+        <h2> About </h2>
+        <p> {{student.profile_about}} </p>
     </div>
 </div>
 {% endblock %}
@@ -17,7 +30,7 @@
 {% block late_optional_includes %}
 <script>
     $(document).ready(function () {
-        selectActiveMenuItem('profileLink','active');
+        selectActiveMenuItem('profileLink', 'active');
     });
 </script>
 {% endblock %}
