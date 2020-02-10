@@ -107,6 +107,23 @@ img{
     margin-top: 2rem;
 }
 
+#aboutText{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+#aboutTextLabel{
+    align-self: center;
+}
+
+#modalButtons{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+
 input[type="file"]{
     width: 0.1px;
     height: 0.1px;
@@ -116,25 +133,26 @@ input[type="file"]{
     z-index: -1;
 }
 
-label{
-   font-size: 1.2rem;
+.inputFileLabel{
+   font-size: 1rem;
    color: var(--main-white-colour);
    background-color: var(--main-purple-colour);
    padding: 0.5rem;
    display: inline-block;
    cursor: pointer;
+   text-align: center;
 }
 
-label > i{
+.inputFileLabel > i{
     font-size:1rem;
     padding-right: 0.25rem;
 }
 
-label:hover{
+.inputFileLabel:hover{
     background-color:var(--light-purple-colour);
 }
 
-label:focus-within{
+.inputFileLabel:focus-within{
     outline: 0.3571rem solid var(--light-green-highlight);
 }
 
@@ -160,6 +178,21 @@ label:focus-within{
 .btn-cancel:hover{
     color: var(--main-purple-colour);
 }
+
+.modal-footer{
+    background-color: var(--main-purple-colour);
+}
+
+.modal-header{
+    background-color: var(--main-purple-colour);
+    color: var(--main-white-colour);
+    text-align: center;
+}
+
+.modal-title{
+    width: 100%;
+}
+
 
 /* ***************** PROFILE
 
@@ -236,6 +269,7 @@ label:focus-within{
     z-index: -1;
     box-shadow: 0 -0.1429rem 0.3rem var(--dark-opaque-overlay);
 }
+
 
 /*
  **** PROFILE NAME

@@ -17,7 +17,7 @@
 
             <!-- MODAL HEADER CONTENT-->
             <div class="modal-header">
-                <h5 class="modal-title" id="editProfileTitle">{{student.forename}}'s Profile</h5>
+                <h5 class="modal-title">{{student.forename}}'s Profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -27,7 +27,7 @@
 
             <!-- MODAL BODY CONTENT -->
             <div class="modal-body">
-                <form>
+                <form action="{{ url_for('student.update_profile') }}" method="POST" >
                     <!-- PROFILE IMAGE-->
                     <div class="row">
                         <!-- CURRENT IMAGE -->
@@ -51,14 +51,31 @@
                     </div>
                     <!-- ./ PROFILE IMAGE -->
 
+                    <!-- ABOUT ME TEXT -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group" id="aboutText">
+                                <label for="profileAboutText" id="aboutTextLabel">About me:</label>
+                                <textarea class="form-control" name="profile_about_text" id="profileAboutText" rows="3">{{student.profile_about}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./ ABOUT ME TEXT-->
+
+                    <!-- BUTTONS -->
+                    <div class="row">
+                        <div class="col-12" id="modalButtons">
+                            <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-save"> Save </button>
+                        </div>
+                    </div>
+                    <!-- ./BUTTONS -->
                 </form>
             </div>
             <!-- ./MODAL BODY COTNENT -->
 
             <!-- MODAL FOOTER CONTENT -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-save"> Save </button>
             </div>
             <!-- ./MODAL FOOTER CONTENT -->
 
