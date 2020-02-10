@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for
 
 from database import mongo
 
@@ -36,10 +36,8 @@ def get_subjects_classes(student, subject="all"):
 
 
 def get_average_grade(grades):
-    total = 0
-    for grade in grades:
-        total += grade[1]
-    return total / len(grades)
+    """Return an average for a list of numbers"""
+    return sum(grades)/len(grades)
 
 
 @mod.route('/')
@@ -47,6 +45,15 @@ def student_index():
     student = mongo.db.users.find_one({'forename': 'Chris'})
     return render_template('student/index.html', student=student)
 
+@mod.route('/update_profile', methods=['POST'])
+def update_profile():
+    student = mongo.db.users.find_one({'forename': 'Chris'})
+
+    if student['profile_about'] != request.form.get('profile_about'):
+       mongo.db.users.update_one({'forename': 'Chris'}, {'$set':{
+           'profile_about' : request.form.get('profile_about')
+       }})
+    return redirect(url_for('student.student_index'))
 
 @mod.route('/classes')
 def student_classes():
