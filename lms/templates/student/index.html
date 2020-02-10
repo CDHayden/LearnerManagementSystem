@@ -2,28 +2,94 @@
 
 
 {% block content %}
-<div class="row">
-    <div class="col-12" id="edit-profile">
-        <a href="#"><i class="far fa-edit"></i> Edit profile </a>
-    </div>
+<!-- EDIT PROFILE LINK-->
+<div class="col-12" id="edit-profile">
+    <a href="#" data-toggle="modal" data-target="#editProfileModal">
+        <i class="far fa-edit"></i> Edit profile </a>
+</div>
+<!-- ./EDIT PROFILE LINK-->
 
-    <div class="col-12" id="profile-image">
-        <img src="http://placeimg.com/200/200/people" alt="profile picture">
-    </div>
+<!-- EDIT PROFILE MODAL -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
 
-    <div class="col-12" id="profile-image-bg">
+            <!-- MODAL HEADER CONTENT-->
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileTitle">{{student.forename}}'s Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- ./MODAL HEADER CONTENT-->
 
-    </div>
 
-    <div class="col-12" id="profile-name">
-        <h1> {{student.forename}} {{student.surname}} </h1>
-    </div>
+            <!-- MODAL BODY CONTENT -->
+            <div class="modal-body">
+                <form>
+                    <!-- PROFILE IMAGE-->
+                    <div class="row">
+                        <!-- CURRENT IMAGE -->
+                        <div class="col-12 col-md-6" id="oldImage">
+                            <img src="http://placeimg.com/200/200/people" alt="profile picture"
+                                class="modal-profile-image">
+                        </div>
+                        <!-- ./CURRENT IMAGE-->
+                        <!-- SELECT NEW IMAGE-->
+                        <div class="col-12 col-md-6" id="newImage">
+                            <div class="form-group">
+                                <label for="profilePicture" class="inputFileLabel">
+                                    <input type="file" name="profile_picture" id="profilePicture" accept="image/*">
+                                    <i class="fas fa-upload"></i>
+                                    Upload new picture
+                                </label>
+                            </div>
+                        </div>
+                        <!-- ./SELECT NEW IMAGE-->
 
-    <div class="col-12" id="profile-about">
-        <h2> About </h2>
-        <p> {{student.profile_about}} </p>
+                    </div>
+                    <!-- ./ PROFILE IMAGE -->
+
+                </form>
+            </div>
+            <!-- ./MODAL BODY COTNENT -->
+
+            <!-- MODAL FOOTER CONTENT -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-save"> Save </button>
+            </div>
+            <!-- ./MODAL FOOTER CONTENT -->
+
+        </div>
     </div>
 </div>
+<!-- ./EDIT PROFILE MODAL -->
+
+<!-- PROFILE IMAGE -->
+<div class="col-12">
+    <img src="http://placeimg.com/200/200/people" alt="profile picture" class="profile-image">
+</div>
+<!-- ./PROFILE IMAGE-->
+
+<!-- PROFILE IMAGE BACKGROUND-->
+<div class="col-12" id="profile-image-bg">
+</div>
+<!-- PROFILE IMAGE BACKGROUND-->
+
+<!-- PROFILE NAME-->
+<div class="col-12" id="profile-name">
+    <h1> {{student.forename}} {{student.surname}} </h1>
+</div>
+<!-- ./PROFILE NAME-->
+
+<!-- PROFILE ABOUT-->
+<div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" id="profile-about">
+    <h2 id="about-title"> About </h2>
+    <p> {{student.profile_about}} </p>
+</div>
+<!-- ./PROFILE ABOUT-->
 {% endblock %}
 
 

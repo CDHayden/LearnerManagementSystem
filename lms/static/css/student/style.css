@@ -2,95 +2,239 @@
 /*
  **** COLOUR VARIABLES
  */
-    --main-white-colour: hsl(0, 0%, 100%);
-    --main-purple-colour: hsl(288, 78.5%, 31.0%);
-
+    --main-white-colour: hsl(0, 100.0%, 100%);
+    --main-purple-colour: hsl(288, 78%, 31.0%);
     --light-purple-colour: hsl(288, 41%, 39%);
     --dark-purple-colour: hsl(288, 78%, 24%);
-
     --dark-opaque-overlay: hsla(0, 0%, 0%, 0.5);
-    --light-opaque-overlay: hsla(0,0%,100%,0.5);
-
+    --light-opaque-overlay: hsla(0, 0%, 100%, 0.5);
     --light-green-highlight: hsl(159, 86.9%, 39.0%);
     --lighest-green-highlight: hsl(159, 100.0%, 95.0%);
 }
 
+html{
+    height: 100%;
+}
 body {
-    background-color: var(--main-white-colour);
+    height: 100%;
+    background-color: hsla(288, 41%, 39%,0.1);
     color: var(--main-purple-colour);
+    font-family: 'Khula', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hind Vadodara', sans-serif;
+}
+
+/* Make all images responsive */
+img{
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+
+/***********************************************************
+ *                       STUDENTBASE                       *
+ ***********************************************************/
+
+ /*
+  **** MENU
+  */
+.navbar-brand {
+    font-family: 'Hind Vadodara', sans-serif;
+}
+
+/*
+ * Help with how to recolour the bootstrap navbar items was found here:
+ https://stackoverflow.com/questions/43381596/bootstrap-4-navbar-color
+ */
+
+ #menu-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.navbar-custom {
+    border-top: 0.4286rem solid var(--dark-purple-colour);
+    margin: 0;
+    box-shadow: 0 0.1429rem 0.3rem var(--dark-opaque-overlay);
+    background-color: var(--main-white-colour);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text{
+    color: var(--dark-purple-colour);
+    font-weight: 480;
+}
+
+.navbar-custom .navbar-nav .nav-link{
+    display: inline-block;
+    color: var(--dark-purple-colour);
+    letter-spacing: 0.1rem;
+    font-size: 1.143rem;
+}
+
+.navbar-custom .nav-item .nav-link:focus,
+.navbar-custom .nav-item .nav-link:hover {
+    font-weight: 600;
+}
+
+.navbar-custom .active{
+    font-weight: 600;
 }
 
 /***********************************************************
  *                       STUDENT/                          *
  ***********************************************************/
 
+ /*
+ *****************   EDIT PROFILE MODAL
+ */
+
+ /*
+  **** FORM
+  */
+ /* See .modal-profile-image below */
+ #oldImage, #newImage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#newImage{
+    margin-top: 2rem;
+}
+
+input[type="file"]{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+label{
+   font-size: 1.2rem;
+   color: var(--main-white-colour);
+   background-color: var(--main-purple-colour);
+   padding: 0.5rem;
+   display: inline-block;
+   cursor: pointer;
+}
+
+label > i{
+    font-size:1rem;
+    padding-right: 0.25rem;
+}
+
+label:hover{
+    background-color:var(--light-purple-colour);
+}
+
+label:focus-within{
+    outline: 0.3571rem solid var(--light-green-highlight);
+}
+
+.btn-cancel{
+    color: var(--main-purple-colour);
+    background-color: var(--main-white-colour);
+    border: 1px solid var(--main-purple-colour);
+}
+
+.btn-save{
+    color: var(--main-white-colour);
+    background-color: var(--main-purple-colour);
+}
+
+.btn-save:hover, .btn-cancel:hover{
+   font-weight: 700;
+}
+
+.btn-save:hover{
+    color: var(--main-white-colour);
+}
+
+.btn-cancel:hover{
+    color: var(--main-purple-colour);
+}
+
 /* ***************** PROFILE
 
 /*
  **** EDIT PROFILE LINK
  */
- #edit-profile{
+
+#edit-profile {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 2rem;
- }
+    margin-top: 3rem;
+}
 
- #edit-profile > a{
-     color: var(--light-purple-colour);
-     letter-spacing: 0.1rem;
-     font-weight: 480;
-     text-decoration: none;
-     transition: letter-spacing .5s;
- }
+#edit-profile>a {
+    display: inline-block;
+    color: var(--light-purple-colour);
+    letter-spacing: 0.1rem;
+    font-weight: 480;
+    text-decoration: none;
 
- #edit-profile > a > i{
-    color:  hsla(288, 41%, 39%,0.5);
- }
+    transition: letter-spacing .5s;
+}
 
-#edit-profile > a::before{
+#edit-profile>a>i {
+    color: hsla(288, 41%, 39%, 0.5);
+}
+
+#edit-profile>a::before {
     content: '';
     display: block;
     width: 0;
     height: 2px;
-    background-color:var(--light-green-highlight);
+    background-color: var(--light-green-highlight);
     transition: all .3s;
 }
 
-#edit-profile > a:hover{
+#edit-profile>a:hover {
     letter-spacing: initial;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-#edit-profile > a:hover::before{
+#edit-profile>a:hover::before {
     width: 100%;
 }
-
 
 /*
  ****   PROFILE IMAGE
  */
-#profile-image>img {
-    display: block;
+
+.modal-profile-image, .profile-image{
     position: relative;
     border-radius: 50%;
     margin-left: auto;
     margin-right: auto;
-    max-width: 100%;
     width: 8.929rem;
-    height: auto;
     box-shadow: 0 0.1rem 1rem var(--dark-opaque-overlay),
-                0 -0.5rem 3rem var(--dark-opaque-overlay), 
-                0 0.5rem 0 1rem var(--main-white-colour);
+                0 -0.5rem 3rem var(--dark-opaque-overlay);
+                /* 0 0.5rem 0 1rem var(--main-white-colour); */
+}
+
+.modal-profile-image{
+    margin: 0;
 }
 
 #profile-image-bg {
     margin-top: -5rem;
     background-color: var(--light-purple-colour);
-    background: linear-gradient(180deg, var(--dark-purple-colour),
-                                var(--light-purple-colour));
+    background: linear-gradient(360deg, var(--dark-purple-colour),
+                var(--main-purple-colour),
+                var(--light-purple-colour));
     min-height: 1.5rem;
     z-index: -1;
+    box-shadow: 0 -0.1429rem 0.3rem var(--dark-opaque-overlay);
 }
 
 /*
@@ -102,8 +246,6 @@ body {
     padding-top: 2rem;
     padding-bottom: 1rem;
     background-color: var(--dark-purple-colour);
-    background: linear-gradient(180deg, var(--light-purple-colour),
-                             var(--dark-purple-colour));
     z-index: -1;
     color: var(--main-white-colour);
 }
@@ -113,18 +255,73 @@ body {
     /* font-size: 3rem; */
 }
 
+/*
+ **** PROFILE ABOUT
+ */
+
 #profile-about {
     color: var(--dark-purple-colour);
-    padding-top: 1rem;
+    background-color: var(--main-white-colour);
+    padding-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
 }
 
-.card {
-    max-width: 18rem;
+
+#profile-about > p {
+    padding-left: 2rem;
+    font-size: 1.2rem;
+}
+
+#about-title {
+    align-self: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1429rem;
+}
+
+/*
+ **** MEDIA QUERIES
+ */
+
+@media(min-width: 768px) {
+    .profile-image {
+        width: 10.71rem;
+    }
+    #profile-about {
+        margin-top: 3rem;
+        border: 0.1429rem solid var(--dark-purple-colour);
+        padding: 3rem 2rem;
+        box-shadow: 0.1429rem 0.4286rem 1.357rem var(--dark-opaque-overlay);
+        border-radius: 1rem;
+    }
+
+    #profile-name{
+        padding-top: 0;
+    }
+
+    #oldImage{
+        align-items: flex-end;
+    }
+    #newImage{
+        align-items: flex-start;
+    }
+}
+
+@media(min-width: 992px) {
+    .profile-image {
+        width: 14.29rem;
+    }
 }
 
 /***********************************************************
  *                 STUDENT/CLASSES                         *
  ***********************************************************/
+
+.card {
+    max-width: 18rem;
+}
 
 /***** SIDE MENU *****/
 
