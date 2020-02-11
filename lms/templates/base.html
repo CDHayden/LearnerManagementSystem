@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+    <!-- GOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Hind+Vadodara:600|Khula&display=swap" rel="stylesheet">
+
     <!-- Site CSS-->
     <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 
@@ -20,13 +23,17 @@
 </head>
 
 <body>
-    <div class="jumbotron jumbotron-fluid">
-        {% block menu %}
-        {% endblock %}
-    </div>
     <div class="container-fluid">
-        {% block content %}
-        {% endblock %}
+        <div class="row">
+            {% block menu %}
+            {% endblock %}
+        </div>
+
+        <div class="row">
+            {% block content %}
+            {% endblock %}
+        </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
