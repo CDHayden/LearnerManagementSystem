@@ -4,44 +4,47 @@
 <div class="row">
 
     <!-- PAGE HEADER -->
-    <div class="col-12 design-mode">
-        <p><strong> {{student.forename}}'s classes </strong></p>
+    <div class="col-12" id="pageTitle">
+        <h1> {{student.forename}}'s classes </h1>
     </div>
     <!-- ./ PAGE HEADER -->
 
-    <!-- SIDE MENU -->
-    <div id="sidemenu" class="col-12 col-sm-4">
+    <!-- CLASS MENU -->
+    <div id="classMenu" class="col-12">
         {% for item in menu_items %}
-        <div class="card">
-            <div class="card-header text-center">
-                <button class="btn btn-link" id="heading{{loop.index}}" data-toggle="collapse"
-                    data-target="#collapse{{loop.index}}" aria-expanded="true" aria-controls="collapse{{loop.index}}">
-                    <h5>{{item}}</h5>
-                </button>
+        <div class="dropdown">
+            <a href="#" class="btn dropdown-toggle" role="button" id="dropdown{{loop.index}}" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"> {{item}} </a>
 
-            </div>
-            <div id="collapse{{loop.index}}" class="card-body collapse show" aria-labelledby="heading{{loop.index}}">
-                <ul>
-                    {% if menu_items[item] | length > 1 %}
-                    <li><a href="{{item}}" class="class-content-link"> {{item}} summary </a></li>
-                    {% endif %}
+            <div class="dropdown-menu" id="dropdown{{loop.index}}">
 
-                    {% for link in menu_items[item] %}
-                    <li><a href="{{item}}" class="class-content-link"> {{link}} </a></li>
-                    {% endfor %}
-                </ul>
+                {# If the current subject has more than one class
+                    offer an overview of the subject for all classes #}
+
+                {% if menu_items[item] | length > 1 %}
+                    <a href="{{item}}" class="dropdown-link class-content-link"> {{item}} summary </a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+                {% for link in menu_items[item] %}
+                    <a href="{{item}}" class="dropdown-link class-content-link"> {{link}} </a>
+                    <div class="dropdown-divider"></div>
+                {% endfor %}
             </div>
         </div>
+
+
         {% endfor %}
     </div>
-    <!-- ./SIDE MENU-->
+
+    <!-- ./CLASS MENU-->
 
     <!-- MAIN CONTENT-->
-    <div class="col-12 col-sm-8" id="classContent">
+    <div class="col-12 col-md-10" id="classContent">
     </div>
     <!-- ./MAIN CONTENT -->
-</div>
 
+</div>
 {% endblock %}
 
 
@@ -61,14 +64,13 @@
             let clicked_elem = $(this)
             let clicked_class = clicked_elem.text().trim();
 
-
             //If the text from the link clicked includes summary
             //Load the subject overview
             if (clicked_class.split(" ").includes("summary")) {
                 $.getJSON('/student/_load_subject_content', {
                     subject: clicked_class.split(" ")[0]
                 }, function (data) {
-                    let subjectName = $("<h4></h4>").text(clicked_elem.attr('href'));
+                    let subjectName = $("<h4 id='subjectName'></h4>").text(clicked_elem.attr('href'));
                     let totalClasses = $("<p id='totalClasses'></p>").text(data.grades.length);
                     let averageGrade = $("<p id='averageGrade'></p>").text(data.average_grade);
 
@@ -82,8 +84,8 @@
                 $.getJSON('/student/_load_class_content', {
                     selected_class: clicked_class
                 }, function (data) {
-                    let subjectName = $("<h4></h4>").text(clicked_elem.attr('href'));
-                    let className = $("<h5></h5>").text(data.class_name);
+                    let subjectName = $("<h4 id='subjectName'></h4>").text(clicked_elem.attr('href'));
+                    let className = $("<h5 id='className'></h5>").text(data.class_name);
                     let classGrade = $("<p id='classGrade'></p>").text(data.grade);
                     let classStartTime = $("<p id='classStartTime'></p>").text(data.start_time);
                     let classEndTime = $("<p id='classEndTime'></p>").text(data.finish_time);
@@ -98,6 +100,9 @@
                 });
             }
 
+            //Because we cancel the default behaviour
+            //We have to hide the dropdown menu explicity 
+            $('.dropdown-toggle').dropdown('hide');
             return false;
         });
     });
