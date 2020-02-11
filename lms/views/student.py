@@ -1,9 +1,11 @@
-from flask import Blueprint, render_template, jsonify, request, redirect, url_for
+import base64
+
+from flask import Blueprint, render_template, jsonify, request, redirect, url_for, current_app
+from werkzeug.utils import secure_filename
 
 from database import mongo
 
 mod = Blueprint("student", __name__)
-
 
 def get_class_grade(student, class_name):
     """Return student's grade for class_name"""
@@ -39,21 +41,35 @@ def get_average_grade(grades):
     """Return an average for a list of numbers"""
     return sum(grades)/len(grades)
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.',1)[1].lower() in \
+            current_app.config['ALLOWED_EXTENSIONS']
 
 @mod.route('/')
 def student_index():
     student = mongo.db.users.find_one({'forename': 'Chris'})
     return render_template('student/index.html', student=student)
 
+
 @mod.route('/update_profile', methods=['POST'])
 def update_profile():
     student = mongo.db.users.find_one({'forename': 'Chris'})
 
     if student['profile_about'] != request.form.get('profile_about'):
-       mongo.db.users.update_one({'forename': 'Chris'}, {'$set':{
-           'profile_about' : request.form.get('profile_about')
-       }})
+        mongo.db.users.update_one({'forename': 'Chris'}, {'$set': {
+            'profile_about': request.form.get('profile_about')}})
+
+    new_image = request.files.get("profile_image")
+    if new_image and allowed_file(new_image.filename):
+        encoded_img = base64.b64encode(new_image.read()).decode()
+        filetype = new_image.filename.rsplit('.',1)[1].lower() 
+        img_data = f'data:image/{filetype};base64,{encoded_img}'
+        mongo.db.users.update_one({'forename':'Chris'}, {'$set':{
+            'profile_image': img_data
+        }})
     return redirect(url_for('student.student_index'))
+
 
 @mod.route('/classes')
 def student_classes():
