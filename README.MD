@@ -1,9 +1,9 @@
 ## How to deploy locally
 You need to create a directory in the base of the repository called "instance".
 Within this directory you need to create a config.py file that contains:
-DEBUG=True
+`DEBUG=True
 MONGO_URI = "database here"
-SECRET_KEY = "secret key here"
+SECRET_KEY = "secret key here"`
 
 ## resources used
 * http://exploreflask.com/ - I used this guide on how to structure my project 
