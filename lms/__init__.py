@@ -15,3 +15,5 @@ app.register_blueprint(home)
 app.register_blueprint(student, url_prefix="/student")
 app.register_blueprint(admin, url_prefix="/admin")
 app.register_blueprint(staff, url_prefix="/staff")
+
+app.secret_key = app.config['SECRET_KEY']
