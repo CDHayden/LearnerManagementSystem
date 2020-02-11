@@ -431,6 +431,26 @@ input[type="file"]{
     classAttendance
 */
 
+/*
+ **** Subject content
+*/
+#totalClasses::before{
+    content: 'Total classes: ';
+    font-weight: 700;
+}
+
+#averageGrade::before{
+    content: 'Average grade: ';
+    font-weight: 700;
+}
+
+#averageGrade::after{
+    content: '%';
+}
+
+/*
+ **** Class content
+ */
 #classContent{
     padding: 2rem;
     text-align: center;
