@@ -95,7 +95,6 @@ img{
  /*
   **** FORM
   */
- /* See .modal-profile-image below */
  #oldImage, #newImage{
     display: flex;
     flex-direction: column;
@@ -244,19 +243,20 @@ input[type="file"]{
  ****   PROFILE IMAGE
  */
 
-.modal-profile-image, .profile-image{
-    position: relative;
-    border-radius: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 8.929rem;
-    box-shadow: 0 0.1rem 1rem var(--dark-opaque-overlay),
-                0 -0.5rem 3rem var(--dark-opaque-overlay);
-                /* 0 0.5rem 0 1rem var(--main-white-colour); */
-}
+ .image-wrapper{
+     height: 8.929rem;
+     width: 8.929rem;
+     border-radius: 50%;
+     margin-left: auto;
+     margin-right: auto;
+     box-shadow: 0 0.1rem 1rem var(--dark-opaque-overlay),
+     0 -0.5rem 3rem var(--dark-opaque-overlay);
+     overflow: hidden;
+ }
 
-.modal-profile-image{
-    margin: 0;
+.profile-image{
+    width: 8.929rem; /* 125px */
+
 }
 
 #profile-image-bg {
@@ -286,7 +286,6 @@ input[type="file"]{
 
 #profile-name>h1 {
     font-weight: 650;
-    /* font-size: 3rem; */
 }
 
 /*
@@ -320,8 +319,12 @@ input[type="file"]{
  */
 
 @media(min-width: 768px) {
-    .profile-image {
+    .image-wrapper{
+        height: 10.71rem;
         width: 10.71rem;
+    }
+    .profile-image {
+        width: 10.71rem; /* 150px */
     }
     #profile-about {
         margin-top: 3rem;
@@ -344,8 +347,12 @@ input[type="file"]{
 }
 
 @media(min-width: 992px) {
-    .profile-image {
+    .image-wrapper{
+        height: 14.20rem;
         width: 14.29rem;
+    }
+    .profile-image {
+        width: 14.29rem; /* 200px */
     }
 }
 

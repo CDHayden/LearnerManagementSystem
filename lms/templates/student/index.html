@@ -27,23 +27,28 @@
 
             <!-- MODAL BODY CONTENT -->
             <div class="modal-body">
-                <form action="{{ url_for('student.update_profile') }}" method="POST" >
+                <form action="{{ url_for('student.update_profile') }}" method="POST">
                     <!-- PROFILE IMAGE-->
                     <div class="row">
                         <!-- CURRENT IMAGE -->
                         <div class="col-12 col-md-6" id="oldImage">
-                            <img src="http://placeimg.com/200/200/people" alt="profile picture"
-                                class="modal-profile-image">
+                            <div class="image-wrapper">
+                                <img src="http://placeimg.com/200/200/people" alt="profile picture"
+                                    class="profile-image">
+                            </div>
+
                         </div>
                         <!-- ./CURRENT IMAGE-->
                         <!-- SELECT NEW IMAGE-->
                         <div class="col-12 col-md-6" id="newImage">
                             <div class="form-group">
                                 <label for="profilePicture" class="inputFileLabel">
-                                    <input type="file" name="profile_picture" id="profilePicture" accept="image/*">
+                                    <input type="file" name="profile_image" id="profilePicture" accept="image/*"
+                                        onchange="previewFile()">
                                     <i class="fas fa-upload"></i>
                                     Upload new picture
                                 </label>
+                                <input type="hidden" name="image_base64" id="image_base64">
                             </div>
                         </div>
                         <!-- ./SELECT NEW IMAGE-->
@@ -56,7 +61,8 @@
                         <div class="col-12">
                             <div class="form-group" id="aboutText">
                                 <label for="profileAboutText" id="aboutTextLabel">About me:</label>
-                                <textarea class="form-control" name="profile_about" id="profileAboutText" rows="3">{{student.profile_about}}</textarea>
+                                <textarea class="form-control" name="profile_about" id="profileAboutText"
+                                    rows="3">{{student.profile_about}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -86,7 +92,9 @@
 
 <!-- PROFILE IMAGE -->
 <div class="col-12">
-    <img src="http://placeimg.com/200/200/people" alt="profile picture" class="profile-image">
+    <div class="image-wrapper">
+        <img src="http://placeimg.com/720/960/people" alt="profile picture" class="profile-image">
+    </div>
 </div>
 <!-- ./PROFILE IMAGE-->
 
@@ -115,5 +123,25 @@
     $(document).ready(function () {
         selectActiveMenuItem('profileLink', 'active');
     });
+
+
+    /*
+        Taken from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+    */
+    function previewFile() {
+        const preview = document.querySelector('#oldImage .image-wrapper>img');
+        const file = document.querySelector('input[type=file]').files[0];
+
+        if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    }
 </script>
 {% endblock %}
