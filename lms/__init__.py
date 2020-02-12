@@ -1,3 +1,5 @@
+import os
+
 from database import mongo
 from flask import Flask
 
@@ -8,7 +10,7 @@ from .views.staff import mod as staff
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
-app.config.from_envvar('MONGO_URI')
+app.config['MONGO_URI'] = os.environ.get("HOST")
 # app.config.from_pyfile('config.py')
 mongo.init_app(app)
 
