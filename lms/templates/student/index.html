@@ -90,6 +90,7 @@
     </div>
     <!-- ./EDIT PROFILE MODAL -->
 
+    <!-- FLASH MESSAGES-->
     <div class="col-12">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -105,6 +106,8 @@
         {% endif %}
         {% endwith %}
     </div>
+    <!-- ./FLASH MESSAGES-->
+
 
     <!-- PROFILE IMAGE -->
     <div class="col-12">
@@ -140,7 +143,6 @@
     $(document).ready(function () {
         selectActiveMenuItem('profileLink', 'active');
     });
-
 
     /*
         Taken from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
