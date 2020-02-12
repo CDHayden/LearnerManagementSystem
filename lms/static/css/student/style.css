@@ -332,7 +332,7 @@ input[type="file"]{
     .profile-image {
         width: 10.71rem; /* 150px */
     }
-    #profile-about {
+    #profile-about, #classContent {
         margin-top: 3rem;
         border: 0.1429rem solid var(--dark-purple-colour);
         padding: 3rem 2rem;
@@ -454,6 +454,7 @@ input[type="file"]{
 #classContent{
     padding: 2rem;
     text-align: center;
+    background-color: var(--main-white-colour);
 }
 
 #classGrade::before{
