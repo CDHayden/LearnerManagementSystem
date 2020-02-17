@@ -1,15 +1,16 @@
 ## How to deploy locally
-You need to create a directory in the base of the repository called "instance".
-Within this directory you need to create a config.py file that contains:
-`DEBUG=True
-MONGO_URI = "database here"
-SECRET_KEY = "secret key here"`
+You will need environment variables (preferably via a .env file) for:
+
+`MONGO_URI= dbURI
+HOST= hostAddress
+PORT= portnumber
+SECRET_KEY= yoursecretkey
+DEBUG= True
+ALLOWED_EXTENSIONS = {'jpg','jpeg','png','gif'}`
 
 ## resources used
-* http://exploreflask.com/ - I used this guide on how to structure my project 
-* https://www.cssmatic.com/box-shadow - Generate css code for drop shadows 
-* https://stackoverflow.com/questions/27221332/bootstrap-collapse-animation-not-smooth - Allowed me to fix the collapase animation on the accordion menu in student/classes
-by removing the padding from the animated elment.
+* https://github.com/python/mypy/issues/5149 - Nested TypedDict issue in python work around
+* http://exploreflask.com/ - I used this guide on how to structure my project initially, although changes were made
 * https://flask.palletsprojects.com/en/1.1.x/patterns/jquery/ - Help with Ajax in flask 
 * https://color.review/ - To pick colour pallete and check the contrast is compliant with standards.
 * https://www.w3schools.com/colors/colors_converter.asp - to change between hexcodes and hsl colour values.
