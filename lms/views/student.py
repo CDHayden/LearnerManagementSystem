@@ -8,7 +8,6 @@ from database import mongo
 
 mod = Blueprint("student", __name__)
 
-
 def get_class_grade(student, class_name):
     """Return student's grade for class_name"""
     grade = student['classes'].get(class_name).get('grade')
