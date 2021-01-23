@@ -6,6 +6,11 @@ from .courses import Attendance, Course
 
 
 class Student:
+    """ 
+    A class used to represent a student
+
+    """
+
     def __init__(self,
                  id: str,
                  forename: str,
@@ -14,12 +19,34 @@ class Student:
                  profile_image: str,
                  courses: List[Course]
                  ) -> None:
-        self.__id = ObjectId(id)
+        """ 
+        Parameters
+        ----------
+        id : str
+            The ObjectId for this student
+        forename: str
+            Forename of the student
+        surname : str
+            Surname of the student
+        profile_about : str
+            The about text written on the student's profile
+        profile_image : str
+            Base64 encoded string for the student's profile image
+        Courses : List[course]
+            A list of course objects for each course the student is 
+            enrolled on.
+        """
+
+        self._id = ObjectId(id)
         self._forename: str = forename
         self._surname: str = surname
         self._profile_about: str = profile_about
         self._profile_image: str = profile_image
         self._courses = courses
+
+    @property
+    def id(self) -> ObjectId:
+        return self._id
 
     @property
     def forename(self) -> str:
@@ -46,11 +73,11 @@ class Student:
         self._profile_about = value
 
     @property
-    def profile_img(self) -> str:
+    def profile_image(self) -> str:
         return self._profile_image
 
-    @profile_img.setter
-    def profile_img(self, value: str) -> None:
+    @profile_image.setter
+    def profile_image(self, value: str) -> None:
         self._profile_img = value
 
     @property
