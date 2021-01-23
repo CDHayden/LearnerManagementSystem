@@ -5,7 +5,7 @@
 
     <!-- PAGE HEADER -->
     <div class="col-12" id="pageTitle">
-        <h1> {{student.forename}}'s classes </h1>
+        <h1> {{student.forename}}'s courses </h1>
     </div>
     <!-- ./ PAGE HEADER -->
 
@@ -82,21 +82,16 @@
             //Otherwise load in class overview
             else {
                 $.getJSON('/student/_load_class_content', {
-                    selected_class: clicked_class
+                    selected_course: clicked_class
                 }, function (data) {
                     let subjectName = $("<h4 id='subjectName'></h4>").text(clicked_elem.attr('href'));
                     let className = $("<h5 id='className'></h5>").text(data.class_name);
                     let classGrade = $("<p id='classGrade'></p>").text(data.grade);
-                    let classStartTime = $("<p id='classStartTime'></p>").text(data.start_time);
-                    let classEndTime = $("<p id='classEndTime'></p>").text(data.finish_time);
-                    let classAttendance = $("<p id='classAttendance'></p>").text(data.attendance);
 
-                    $('#classContent').append(subjectName,
+                    $('#classContent').append(
+						subjectName,
                         className,
-                        classGrade,
-                        classStartTime,
-                        classEndTime,
-                        classAttendance)
+                        classGrade)
                 });
             }
 
