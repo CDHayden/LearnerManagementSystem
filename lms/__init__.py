@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config['MONGO_URI'] = os.environ.get("MONGO_URI")
-
+app.config['ALLOWED_EXTENSIONS'] = os.environ.get("ALLOWED_EXTENSIONS")
 mongo.init_app(app)
 
 app.register_blueprint(home)
