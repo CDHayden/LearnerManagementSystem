@@ -11,12 +11,12 @@ def create_student_from_cursor(cursor):
                 cursor['surname'],
                 cursor['profile_about'],
                 cursor['profile_image'],
-                cursor['courses'])
+                cursor['subjects'])
     return s
 
 
 #Accepts get_student_by_name("Bob Loblaw") and get_student_by_name("Bob", "Loblaw")
-def get_student_by_name(name, surname):
+def get_student_by_name(name, surname=None):
     #If name is one variable seperated by space
     #Split it and store those values in name and surname
     if surname is None:
@@ -108,11 +108,26 @@ def update_student_profile(student_name,new_profile_data):
     return flashed_message
 
 def generate_student_course_menu(student_name):
-    student = get_student_by_name(student_name)[0]
-    subjects = student.subjects
-    pass
+    """ Generate a list of tuples that show which subjects and their
+    courses the student studies
 
-def load_subject_conent(student_name, subject):
+    parameters
+    ----------
+    student_name : str
+    Name of student to use
+    """
+
+    student = get_student_by_name(student_name)[0]
+    #List comprehension will return output like:
+    # [ 
+    #  ('maths', ['trigonometry', 'algebra']), 
+    #  ('english', ['speaking', 'grammar'])
+    # ]
+    return [ (subject['name'], [course['name'] for course in
+        subject['courses']]) for subject in
+            student.subjects]
+
+def load_subject_content(student_name, subject):
     pass
 
 def load_course_content(student_name, course):
