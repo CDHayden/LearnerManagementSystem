@@ -84,7 +84,21 @@ class Student:
     @profile_image.setter
     def profile_image(self, value):
         self._profile_img = value
+        mongo.db.users.update_one(self._filter, {"$set": {profile_image:
+            value}})
 
     @property
     def subjects(self):
         return self._subjects
+    
+    # https://thispointer.com/how-to-merge-two-or-more-dictionaries-in-python/
+    # I used the code from here "(Merge two dictionaries and add
+    # values of common keys" and tweaked it slightly.
+    def add_course(self, new_course):
+        new_subjects = {**self._subjects, **new_course}
+        for key,value in new_subjects.items():
+            if key in new_course and key in self._subjects:
+                new_subjects[key].update(self._subjects[key])
+        self._subjects = new_subjects
+        mongo.db.users.update_one(self._filter, {"$set": {'subjects':
+            new_subjects}})
