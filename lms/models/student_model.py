@@ -1,9 +1,6 @@
-from typing import TypedDict, List, Tuple
-from bson.objectid import ObjectId
+from pymongo.bson.objectid import ObjectId # type: ignore
 
 from database import mongo
-from .courses import Attendance, Course
-
 
 class Student:
     """ 
@@ -12,13 +9,13 @@ class Student:
     """
 
     def __init__(self,
-                 id: str,
-                 forename: str,
-                 surname: str,
-                 profile_about: str,
-                 profile_image: str,
-                 courses: List[Course]
-                 ) -> None:
+                 id,
+                 forename,
+                 surname,
+                 profile_about,
+                 profile_image,
+                 subjects
+                 ): 
         """ 
         Parameters
         ----------
@@ -32,54 +29,54 @@ class Student:
             The about text written on the student's profile
         profile_image : str
             Base64 encoded string for the student's profile image
-        Courses : List[course]
+        Subjects : List[object]
             A list of course objects for each course the student is 
             enrolled on.
         """
 
         self._id = ObjectId(id)
-        self._forename: str = forename
-        self._surname: str = surname
-        self._profile_about: str = profile_about
-        self._profile_image: str = profile_image
-        self._courses = courses
+        self._forename = forename
+        self._surname = surname
+        self._profile_about = profile_about
+        self._profile_image = profile_image
+        self._subjects = subjects
 
     @property
-    def id(self) -> ObjectId:
+    def id(self):
         return self._id
 
     @property
-    def forename(self) -> str:
+    def forename(self):
         return self._forename
 
     @forename.setter
-    def forename(self, value: str) -> None:
+    def forename(self, value):
         self._forename = value
 
     @property
-    def surname(self) -> str:
+    def surname(self):
         return self._surname
 
     @surname.setter
-    def surname(self, value: str) -> None:
+    def surname(self, value):
         self._surname = value
 
     @property
-    def profile_about(self) -> str:
+    def profile_about(self):
         return self._profile_about
 
     @profile_about.setter
-    def profile_about(self, value: str) -> None:
+    def profile_about(self, value):
         self._profile_about = value
 
     @property
-    def profile_image(self) -> str:
+    def profile_image(self):
         return self._profile_image
 
     @profile_image.setter
-    def profile_image(self, value: str) -> None:
+    def profile_image(self, value):
         self._profile_img = value
 
     @property
-    def courses(self) -> Course:
-        return self._courses
+    def subjects(self):
+        return self._subjects
