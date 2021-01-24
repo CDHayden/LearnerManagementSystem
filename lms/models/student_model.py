@@ -1,4 +1,3 @@
-
 from bson.objectid import ObjectId
 
 from database import mongo
@@ -95,6 +94,14 @@ class Student:
     # I used the code from here "(Merge two dictionaries and add
     # values of common keys" and tweaked it slightly.
     def add_course(self, new_course):
+        """ Adds a new course to the list of courses studied by this
+        student
+
+        Parameters
+        ----------
+        new_course : dict
+        {"subject_name":{"course_name":{"grade":int}}}
+        """
         new_subjects = {**self._subjects, **new_course}
         for key,value in new_subjects.items():
             if key in new_course and key in self._subjects:
