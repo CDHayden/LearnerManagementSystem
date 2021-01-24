@@ -107,26 +107,6 @@ def update_student_profile(student_name,new_profile_data):
 
     return flashed_message
 
-def generate_student_course_menu(student_name):
-    """ Generate a list of tuples that show which subjects and their
-    courses the student studies
-
-    parameters
-    ----------
-    student_name : str
-    Name of student to use
-    """
-
-    student = get_student_by_name(student_name)[0]
-    #List comprehension will return output like:
-    # [ 
-    #  ('maths', ['trigonometry', 'algebra']), 
-    #  ('english', ['speaking', 'grammar'])
-    # ]
-    return [ (subject['name'], [course['name'] for course in
-        subject['courses']]) for subject in
-            student.subjects]
-
 def load_subject_content(student_name, subject):
     pass
 
