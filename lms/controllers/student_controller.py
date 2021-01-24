@@ -108,11 +108,12 @@ def update_student_profile(student_name,new_profile_data):
     return flashed_message
 
 def generate_student_course_menu(student_name):
+    student = get_student_by_name(student_name)[0]
+    subjects = student.subjects
     pass
 
 def load_subject_conent(student_name, subject):
     pass
-
 
 def load_course_content(student_name, course):
     pass
