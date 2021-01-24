@@ -109,3 +109,35 @@ class Student:
         self._subjects = new_subjects
         mongo.db.users.update_one(self._filter, {"$set": {'subjects':
             new_subjects}})
+
+    def delete_course(self, subject_name, course_name):
+        """Deletes a course from the list of courses studied by
+        this student (if found)
+
+        Parameters
+        ----------
+        subject_name: str
+        Subject the course belongs too
+
+        course_name: str
+
+        Returns
+        -------
+        True if deleted
+        False if not deleted
+        """
+
+        if subject_name in self._subjects.keys():
+            courses = self._subjects[subject_name].keys()
+            if course_name in courses:
+                if len(courses) == 1:
+                    #last course in subject so delete the whole
+                    #subject
+                    del self._subjects[subject_name]
+                else:
+                    #just delete the course
+                    del self._subjects[subject_name][course_name]
+                mongo.db.update_one(self._filter, {"$set":{'subjects':
+                    self._subjects}})
+                return True
+        return False
