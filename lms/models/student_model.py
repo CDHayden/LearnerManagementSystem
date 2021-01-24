@@ -1,4 +1,5 @@
-from pymongo.bson.objectid import ObjectId # type: ignore
+
+from bson.objectid import ObjectId
 
 from database import mongo
 
@@ -40,6 +41,7 @@ class Student:
         self._profile_about = profile_about
         self._profile_image = profile_image
         self._subjects = subjects
+        self._filter = {"_id":self._id}
 
     @property
     def id(self):
@@ -52,6 +54,8 @@ class Student:
     @forename.setter
     def forename(self, value):
         self._forename = value
+        mongo.db.users.update_one(self._filter, {"$set": {forename:
+            value}})
 
     @property
     def surname(self):
@@ -60,6 +64,8 @@ class Student:
     @surname.setter
     def surname(self, value):
         self._surname = value
+        mongo.db.users.update_one(self._filter, {"$set": {surname:
+            value}})
 
     @property
     def profile_about(self):
@@ -68,6 +74,8 @@ class Student:
     @profile_about.setter
     def profile_about(self, value):
         self._profile_about = value
+        mongo.db.users.update_one(self._filter, {"$set": {profile_about:
+            value}})
 
     @property
     def profile_image(self):
