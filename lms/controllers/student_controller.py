@@ -1,4 +1,3 @@
-from typing import List, Union
 import base64
 from flask import current_app
 
@@ -6,7 +5,7 @@ from ..models.student_model import Student
 from database import mongo
 
 
-def create_student_from_cursor(cursor) -> Student:
+def create_student_from_cursor(cursor):
     s = Student(cursor['_id'],
                 cursor['forename'],
                 cursor['surname'],
@@ -17,7 +16,7 @@ def create_student_from_cursor(cursor) -> Student:
 
 
 #Accepts get_student_by_name("Bob Loblaw") and get_student_by_name("Bob", "Loblaw")
-def get_student_by_name(name: str, surname: str = None) -> Union[Student,List[Student]]:
+def get_student_by_name(name, surname):
     #If name is one variable seperated by space
     #Split it and store those values in name and surname
     if surname is None:
