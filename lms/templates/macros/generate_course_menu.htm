@@ -3,7 +3,7 @@
 {% for subject in subjects %}
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-heading{{loop.index}}">
-	  <button class="accordion-button collapsed" type="button"
+	  <button class="accordion-button collapsed subject-content-link" type="button"
 		  data-bs-toggle="collapse"
 		  data-bs-target="#flush-collapse{{loop.index}}"
 		  aria-expanded="false"
@@ -17,9 +17,11 @@
 				 <div class="accordion-body">
 					 <ul>
 						{% for course in subjects[subject] %}
-							 <li> 
-								 <a class="class-content-link">{{course}}</a>
-							 </li> 
+							 <li>
+								 <a class="course-content-link">
+									 {{course}}
+								 </a> 
+							 </li>
 						{% endfor %}
 					 </ul>
 				 </div>
