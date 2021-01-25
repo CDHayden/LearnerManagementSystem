@@ -2,7 +2,7 @@
 {% extends '/student/studentbase.html' %}
 
 {% block content %}
-<div class="row">
+<div class="row h-100">
 
     <!-- PAGE HEADER -->
     <div class="col-12" id="pageTitle">
@@ -11,13 +11,18 @@
     <!-- ./ PAGE HEADER -->
 
     <!-- COURSE MENU -->
-	<div class="col-3">
+	<div class="col-4 col-md-3">
 		{{gm.generate_course_menu(menu_items)}}
 	</div>
 	<!-- ./COURSE MENU-->
 
     <!-- MAIN CONTENT-->
-    <div class="col-9" id="courseContent">
+    <div class="col-8 col-md-9 vh-100" id="courseContent">
+		<h3 id="subjectName" class="text-capitalize"></h3>
+		<h4 id="numCourses"></h4>
+		<h4 id="avgGrade"></h4>
+		<h4 id="courseName" class="text-capitalize"></h4>
+		<h4 id="courseGrade"></h4>
     </div>
     <!-- ./MAIN CONTENT -->
 
@@ -28,7 +33,87 @@
 {% block late_optional_includes %}
 <script>
 
+	const clearContent = () => {
+		subject = document.getElementById('subjectName');
+		numCourses = document.getElementById('numCourses');
+		avgGrade= document.getElementById('avgGrade');
+		courseName = document.getElementById('courseName');
+		courseGrade = document.getElementById('courseGrade');
+
+		subject.innerText = '';
+		numCourses.innerText = '';
+		avgGrade.innerText = '';
+		courseName.innerText = '';
+		courseGrade.innerText = '';
+	}
+
 document.addEventListener('DOMContentLoaded', (event)=> {
+
+	/**
+	 * Called when a link with the "course-content-link" class is clicked.
+	 * Requests and loads information about the course via AJAX
+	 *
+	 * @param e - Event object passed in on click
+	 */
+	const loadCourseContent = (e) => {
+	  const course = e.srcElement.innerText;
+	  const subject = e.srcElement.parentElement.parentElement.parentElement.parentElement.previousElementSibling.innerText; 
+
+	  fetch('/student/_load_course_content', {
+		headers: { 'content-type': 'application/json; charset=utf-8' },
+		method: 'post',
+		body: JSON.stringify({
+		  subject: subject,
+		  course: course,
+		}),
+	  })
+		.then((response) => response.json())
+		.then((data) => {
+			clearContent();
+			
+			subject_el = document.getElementById('subjectName');
+			courseName_el = document.getElementById('courseName');
+			courseGrade_el = document.getElementById('courseGrade');
+
+			subject_el.innerText = subject;
+			courseName_el.innerText = course;
+			courseGrade_el.innerText = "Grade: " + data.grade;
+		});
+	  e.preventDefault();
+	};
+
+	/**
+	 * Called when a link with the "subject-content-link" class is clicked.
+	 * Requests and loads information about the course via AJAX
+	 *
+	 * @param e - Event object passed in on click
+	 * @param display - Element to display JSON data in
+	 */
+	const loadSubjectContent = (e) => {
+	  const subject = e.srcElement.innerText;
+
+	  if (e.srcElement.attributes['aria-expanded'].nodeValue == 'true') {
+		fetch('/student/_load_subject_content', {
+		  headers: { 'Content-Type': 'application/json; charset=utf-8' },
+		  method: 'POST',
+		  body: JSON.stringify({
+			subject: subject,
+		  }),
+		})
+		  .then((response) => response.json())
+		  .then((data) => {
+			clearContent();
+			subject_el = document.getElementById('subjectName');
+			numCourses_el = document.getElementById('numCourses');
+			avgGrade_el = document.getElementById('avgGrade');
+
+			subject_el.innerText = subject;
+			numCourses_el.innerText = "Number of courses: " + data.num_courses;
+			avgGrade_el.innerText = "Average grade: " + data.avg_grade;
+		  });
+	  }
+	  e.preventDefault();
+	};
 
 	selectActiveMenuItem('course-link')
 	/*
@@ -36,14 +121,12 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 		Handler functions can be viewed in /static/js/script.js
 	*/
 
-	displayID = 'courseContent'
-
 	let course_links =
 	document.querySelectorAll('.course-content-link');
 
 	course_links.forEach(link => {
 		link.addEventListener('click',
-			function(e){ loadCourseContent(e,displayID);}, false);	
+			function(e){ loadCourseContent(e);}, false);	
 	});
 
 	let subject_links = 
@@ -51,8 +134,9 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 
 	subject_links.forEach(link => {
 		link.addEventListener('click',
-			function(e){ loadSubjectContent(e,displayID);}, false);	
+			function(e){ loadSubjectContent(e);}, false);	
 	});
 });
+
 </script>
 {% endblock %}
