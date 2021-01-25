@@ -8,14 +8,14 @@
 		  data-bs-target="#flush-collapse{{loop.index}}"
 		  aria-expanded="false"
 		  aria-controls="flush-collapse{{loop.index}}">
-		{{subject}}
+		   {{subject}} 
       </button>
     </h2>
 	<div id="flush-collapse{{loop.index}}" class="accordion-collapse
 		collapse" aria-labelledby="flush-heading{{loop.index}}"
 		data-bs-parent="#courseMenu">
 				 <div class="accordion-body">
-					 <ul>
+					 <ul class="course-menu-list">
 						{% for course in subjects[subject] %}
 							 <li>
 								 <a class="course-content-link">
