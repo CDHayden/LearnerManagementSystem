@@ -27,56 +27,30 @@
 
 {% block late_optional_includes %}
 <script>
-    $(document).ready(function () {
-        selectActiveMenuItem('classesLink', 'active');
-    });
 
-    /*
-    * When a hyperlink with .class-content-link is clicked
-    */
-    $(function () {
-        $('a.class-content-link').bind('click', function () {
-            $('#classContent').empty();
+document.addEventListener('DOMContentLoaded', (event)=> {
+	/*
+		Register links with appropriate click handlers
+		Handler functions can be viewed in /static/js/script.js
+	*/
 
-            let clicked_elem = $(this)
-            let clicked_class = clicked_elem.text().trim();
+	displayID = 'courseContent'
 
-            //If the text from the link clicked includes summary
-            //Load the subject overview
-            if (clicked_class.split(" ").includes("summary")) {
-                $.getJSON('/student/_load_subject_content', {
-                    subject: clicked_class.split(" ")[0]
-                }, function (data) {
-                    let subjectName = $("<h4 id='subjectName'></h4>").text(clicked_elem.attr('href'));
-                    let totalClasses = $("<p id='totalClasses'></p>").text(data.grades.length);
-                    let averageGrade = $("<p id='averageGrade'></p>").text(data.average_grade);
+	let course_links =
+	document.querySelectorAll('.course-content-link');
 
-                    $('#classContent').append(subjectName,
-                        totalClasses,
-                        averageGrade);
-                });
-            }
-            //Otherwise load in class overview
-            else {
-                $.getJSON('/student/_load_class_content', {
-                    selected_course: clicked_class
-                }, function (data) {
-                    let subjectName = $("<h4 id='subjectName'></h4>").text(clicked_elem.attr('href'));
-                    let className = $("<h5 id='className'></h5>").text(data.class_name);
-                    let classGrade = $("<p id='classGrade'></p>").text(data.grade);
+	course_links.forEach(link => {
+		link.addEventListener('click',
+			function(e){ loadCourseContent(e,displayID);}, false);	
+	});
 
-                    $('#classContent').append(
-						subjectName,
-                        className,
-                        classGrade)
-                });
-            }
+	let subject_links = 
+		document.querySelectorAll('.subject-content-link');
 
-            //Because we cancel the default behaviour
-            //We have to hide the dropdown menu explicity
-            $('.dropdown-toggle').dropdown('hide');
-            return false;
-        });
-    });
+	subject_links.forEach(link => {
+		link.addEventListener('click',
+			function(e){ loadSubjectContent(e,displayID);}, false);	
+	});
+});
 </script>
 {% endblock %}
