@@ -8,16 +8,9 @@
  *
  * @param elementId - Id of the menu item to apply active to
  */
-function selectActiveMenuItem(elementId, className) {
-  let list = document.querySelectorAll('#menuList > li');
-
-  list.forEach(function (currentLink) {
-    if (currentLink.id == elementId) {
-      currentLink.classList.add(className);
-    } else {
-      currentLink.classList.remove(className);
-    }
-  });
+function selectActiveMenuItem(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.toggle('active');
 }
 
 /**

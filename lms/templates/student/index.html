@@ -141,6 +141,7 @@
 
 {% block late_optional_includes %}
 <script>
+
     /*
         Taken from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
     */
@@ -159,5 +160,10 @@
             }
         }
     }
+
+document.addEventListener('DOMContentLoaded', (event)=> {
+	selectActiveMenuItem('profile-link');
+});
+
 </script>
 {% endblock %}
