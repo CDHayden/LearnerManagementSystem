@@ -93,7 +93,7 @@ def get_subject_content(student_id, subject_name):
         subject = student.subjects[subject_name]
         for course in subject:
             total = total + subject[course]['grade']
-        avg_grade = total / len(subject)
+        avg_grade = round(total / len(subject),2)
         return {'num_courses':len(subject), 'avg_grade': avg_grade }
     else:
         return {}
