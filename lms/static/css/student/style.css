@@ -44,6 +44,7 @@ img{
   */
 .navbar-brand {
     font-family: 'Hind Vadodara', sans-serif;
+	margin-left: 1rem;
 }
 
 /*
@@ -333,7 +334,7 @@ input[type="file"]{
     .profile-image {
         width: 10.71rem; /* 150px */
     }
-    #profile-about, #courseContent {
+    #profile-about {
         margin-top: 3rem;
         border: 0.1429rem solid var(--dark-purple-colour);
         padding: 3rem 2rem;
@@ -380,51 +381,34 @@ input[type="file"]{
 }
 
 /***** CLASS CONTENT *****/
-
-/* Format how AJAX data is displayed. To change IDs see JS at bottom of
-    student/courses.html
-/*
-
-    subjectName
-    totalClasses
-    averageGrade
-
-    subjectName
-    className
-    classGrade
-    classStartTime
-    classEndTime
-    classAttendance
-*/
-
-/*
- **** Subject content
-*/
-#totalClasses::before{
-    content: 'Total classes: ';
-    font-weight: 700;
+.accordion{
+	padding-left: 0;	
 }
 
-#averageGrade::before{
-    content: 'Average grade: ';
-    font-weight: 700;
+.accordion-button:not(.collapsed) {
+    color: #000000;
+    background-color: transparent;
 }
 
-#averageGrade::after{
-    content: '%';
+.course-menu-list{
+	padding: 0;
+	list-style-type: none;
 }
 
-/*
- **** Class content
- */
+.course-menu-list li a{
+	cursor: pointer;
+	color: var(--dark-purple-colour);
+	font-weight: bold;
+	text-decoration:none;
+}
+
 #courseContent{
-    padding: 2rem;
+	padding-top: 2rem;
     text-align: center;
     background-color: var(--main-white-colour);
 }
 
-#classGrade::before{
-    content: 'Grade: ';
-    font-weight: 700;
+#subjectName{
+	text-decoration: underline;
 }
 
