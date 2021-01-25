@@ -1,3 +1,4 @@
+{% import '/macros/generate_course_menu.htm' as gm %}
 {% extends '/student/studentbase.html' %}
 
 {% block content %}
@@ -9,38 +10,14 @@
     </div>
     <!-- ./ PAGE HEADER -->
 
-    <!-- CLASS MENU -->
-    <div id="classMenu" class="col-12">
-        {% for item in menu_items %}
-        <div class="dropdown">
-            <a href="#" class="btn dropdown-toggle" role="button" id="dropdown{{loop.index}}" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false"> {{item}} </a>
-
-            <div class="dropdown-menu" id="dropdown{{loop.index}}">
-
-                {# If the current subject has more than one class
-                    offer an overview of the subject for all classes #}
-
-                {% if menu_items[item] | length > 1 %}
-                    <a href="{{item}}" class="dropdown-link class-content-link"> {{item}} summary </a>
-                    <div class="dropdown-divider"></div>
-                {% endif %}
-
-                {% for link in menu_items[item] %}
-                    <a href="{{item}}" class="dropdown-link class-content-link"> {{link}} </a>
-                    <div class="dropdown-divider"></div>
-                {% endfor %}
-            </div>
-        </div>
-
-
-        {% endfor %}
-    </div>
-
-    <!-- ./CLASS MENU-->
+    <!-- COURSE MENU -->
+	<div class="col-3">
+		{{gm.generate_course_menu(menu_items)}}
+	</div>
+	<!-- ./COURSE MENU-->
 
     <!-- MAIN CONTENT-->
-    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" id="classContent">
+    <div class="col-9" id="courseContent">
     </div>
     <!-- ./MAIN CONTENT -->
 
