@@ -1,4 +1,5 @@
 import base64
+from bson.objectid import ObjectId
 from flask import current_app
 
 from ..models.student_model import Student
@@ -6,6 +7,15 @@ from database import mongo
 
 
 def create_student_from_cursor(cursor):
+    """
+    Returns a student object populated with data from a pymongo cursor
+
+    Parameters
+    ----------
+    cursor : pymongo_cursor
+    Database information to load into student object
+    """
+
     s = Student(cursor['_id'],
                 cursor['forename'],
                 cursor['surname'],
@@ -38,37 +48,56 @@ def get_student_by_name(name, surname=None):
     else:
         raise NameError(f"Student {name} {surname} could not be found.")
 
-def get_course_grade(student, course_name):
-    """Return student's grade for course_name"""
-    grade = student['courses'].get(course_name).get('grade')
-    return (course_name,grade)
 
-def get_course_subject(course_name):
-    """Return the subject that course belongs to"""
-    selected_course = mongo.db.courses.find_one({'name': course_name})
-    return selected_course['subject']
-
-def get_subjects_courses(student, course="all"):
-    """Return a dict of subjects and their courses for given student
-
-    Keyword arguements:
-    student -- The student you want subject and course information of
-    subject -- Specific courses from a single subject. Default is all.
+def get_student_by_id(student_id):
     """
-    # subjects_courses = {}
-    # for course_name in student.courses.keys():
-        # selected_subject = get_course_subject(course_name)
-        # if subject == "all" or subject == selected_subject:
-            # if selected_subject not in subjects_courses:
-                # subjects_courses[selected_subject] = []
-            # subjects_courses[selected_subject].append(course_name)
+    Returns Student object for student of student_id
 
-    return student.courses.keys()
+    Parameters
+    ----------
+    student_id : str
+    Unique ID of student
 
-def get_average_grade(grades):
-    """Return an average for a list of numbers"""
-    avg = sum(grades) / len(grades)
-    return avg
+    Returns
+    -------
+    Empty dict on error
+    Otherwise a student object (see /models/student_model.py)
+    """
+
+    try:
+        cursor = mongo.db.users.find_one({'_id':ObjectId(student_id)})
+        return create_student_from_cursor(cursor)
+    except:
+        return {}
+
+
+def get_subject_content(student_id, subject_name):
+    """
+    Returns an overview of a subject for a student
+
+    Parameters
+    ----------
+    student_id : str
+    ID of the student to use
+    subject_name : str
+    Name of the subject we want to overview of
+
+    Return
+    ------
+    Empty dictionary on error.
+    On success: {'avg_grade':float, 'num_courses': int}
+    """
+    total = 0
+    student = get_student_by_id(student_id)
+    if student and subject_name in student.subjects:
+        subject = student.subjects[subject_name]
+        for course in subject:
+            total = total + subject[course]['grade']
+        avg_grade = total / len(subject)
+        return {'num_courses':len(subject), 'avg_grade': avg_grade }
+    else:
+        return {}
+
 
 def allowed_file(filename):
     """Checks if the filename provided is permitted 
@@ -81,14 +110,31 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in \
         current_app.config['ALLOWED_EXTENSIONS']
 
-def update_student_profile(student_name,new_profile_data):
-    student = get_student_by_name(student_name)[0]
+
+def update_student_profile(student_id,new_profile_data):
+    """
+    Updates students profile about and image if changed
+
+    Parameters
+    ----------
+    student_id : str
+    Unique ID of student
+
+    profile_data : dict
+    { 'profile_about':str, profile_img: }
+    """
+
+    student = get_student_by_id(student_id) 
     flashed_message = ""
 
     if student.profile_about != new_profile_data['profile_about']:
-        mongo.db.users.update_one({'_id':student.id}, {'$set':{
+        mongo.db.users.update_one({'_id':student.id},
+                {'$set':
+                    {
                 'profile_about': new_profile_data['profile_about']
-            }})
+                    }
+                })
+
         if not flashed_message:
             flashed_message = "Profile updated."
 
@@ -98,18 +144,14 @@ def update_student_profile(student_name,new_profile_data):
         encoded_img = base64.b64encode(new_image.read()).decode()
         filetype = new_image.filename.rsplit('.', 1)[1].lower()
         img_data = f'data:image/{filetype};base64,{encoded_img}'
-        mongo.db.users.update_one({'_id':student.id}, {'$set':{
+        mongo.db.users.update_one({'_id':student.id},
+                {'$set':
+                    {
                 'profile_image': img_data
-            }})
+                    }
+                })
 
         if not flashed_message:
             flashed_message = "Profile updated."
 
     return flashed_message
-
-def load_subject_content(student_name, subject):
-    pass
-
-def load_course_content(student_name, course):
-    pass
-
