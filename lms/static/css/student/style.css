@@ -15,6 +15,7 @@
 html{
     height: 100%;
 }
+
 body {
     height: 100%;
     background-color: hsla(288, 41%, 39%,0.1);
@@ -332,7 +333,7 @@ input[type="file"]{
     .profile-image {
         width: 10.71rem; /* 150px */
     }
-    #profile-about, #classContent {
+    #profile-about, #courseContent {
         margin-top: 3rem;
         border: 0.1429rem solid var(--dark-purple-colour);
         padding: 3rem 2rem;
@@ -377,46 +378,11 @@ input[type="file"]{
 #pageTitle > h1{
     font-size: 1.75rem;
 }
-/***** CLASS MENU (dropdowns) *****/
-
-#classMenu{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    box-shadow: 0 0.1rem 0.2rem var(--dark-opaque-overlay);
-}
-
-.dropdown{
-    display: inline-block;
-}
-
-.dropdown-toggle, .dropdown-menu, .dropdown-menu a {
-   color: var(--main-purple-colour);
-}
-
-.dropdown-toggle{
-    border-left: 1px solid var(--dark-purple-colour);
-    border-radius: 0;
-}
-
-.dropdown:last-of-type .dropdown-toggle{
-    border-right: 1px solid var(--dark-purple-colour);
-}
-.dropdown-menu{
-    text-align: center;
-}
-
-.dropdown-menu > a:hover,
-.dropdown-menu a:focus,
-.dropdown-toggle:hover,
-.dropdown-toggle:focus{
-    color: var(--light-purple-colourf);
-}
 
 /***** CLASS CONTENT *****/
 
 /* Format how AJAX data is displayed. To change IDs see JS at bottom of
-    student/classes.html
+    student/courses.html
 /*
 
     subjectName
@@ -451,7 +417,7 @@ input[type="file"]{
 /*
  **** Class content
  */
-#classContent{
+#courseContent{
     padding: 2rem;
     text-align: center;
     background-color: var(--main-white-colour);
@@ -462,25 +428,3 @@ input[type="file"]{
     font-weight: 700;
 }
 
-#classEndTime, #classStartTime{
-    display: inline-block;
-}
-
-#classStartTime::before{
-    content: 'Class Time: ';
-    font-weight: 700;
-}
-
-#classStartTime::after{
-    content: ' ';
-}
-
-#classEndTime::before{
-    content: ' - ';
-    font-weight: 700;
-}
-
-#classAttendance::before{
-    content: 'Attendance: ';
-    font-weight: 700;
-}
