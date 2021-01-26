@@ -1,6 +1,6 @@
 import base64
 from bson.objectid import ObjectId
-from flask import current_app
+from os import environ
 
 from ..models.student_model import Student
 import database
@@ -116,7 +116,7 @@ def allowed_file(filename):
 
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in \
-        current_app.config['ALLOWED_EXTENSIONS']
+        environ.get('ALLOWED_EXTENSIONS')
 
 
 def update_student_profile(student_id,new_profile_data):
