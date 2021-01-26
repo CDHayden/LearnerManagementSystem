@@ -1,6 +1,6 @@
 from bson.objectid import ObjectId
 
-from database import mongo
+import database
 
 class Student:
     """ 
@@ -53,7 +53,7 @@ class Student:
     @forename.setter
     def forename(self, value):
         self._forename = value
-        mongo.db.users.update_one(self._filter, {"$set": {forename:
+        database.mongo.db.users.update_one(self._filter, {"$set": {forename:
             value}})
 
     @property
@@ -63,7 +63,7 @@ class Student:
     @surname.setter
     def surname(self, value):
         self._surname = value
-        mongo.db.users.update_one(self._filter, {"$set": {surname:
+        database.mongo.db.users.update_one(self._filter, {"$set": {surname:
             value}})
 
     @property
@@ -73,7 +73,7 @@ class Student:
     @profile_about.setter
     def profile_about(self, value):
         self._profile_about = value
-        mongo.db.users.update_one(self._filter, {"$set": {profile_about:
+        database.mongo.db.users.update_one(self._filter, {"$set": {profile_about:
             value}})
 
     @property
@@ -83,7 +83,7 @@ class Student:
     @profile_image.setter
     def profile_image(self, value):
         self._profile_img = value
-        mongo.db.users.update_one(self._filter, {"$set": {profile_image:
+        database.mongo.db.users.update_one(self._filter, {"$set": {profile_image:
             value}})
 
     @property
@@ -107,7 +107,7 @@ class Student:
             if key in new_course and key in self._subjects:
                 new_subjects[key].update(self._subjects[key])
         self._subjects = new_subjects
-        mongo.db.users.update_one(self._filter, {"$set": {'subjects':
+        database.mongo.db.users.update_one(self._filter, {"$set": {'subjects':
             new_subjects}})
 
     def delete_course(self, subject_name, course_name):
@@ -137,7 +137,7 @@ class Student:
                 else:
                     #just delete the course
                     del self._subjects[subject_name][course_name]
-                mongo.db.update_one(self._filter, {"$set":{'subjects':
+                database.mongo.db.update_one(self._filter, {"$set":{'subjects':
                     self._subjects}})
                 return True
         return False

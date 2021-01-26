@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 from flask import current_app
 
 from ..models.student_model import Student
-from database import mongo
+import database
 
 
 def create_student_from_cursor(cursor):
@@ -14,14 +14,22 @@ def create_student_from_cursor(cursor):
     ----------
     cursor : pymongo_cursor
     Database information to load into student object
+
+    Returns
+    -------
+    Student Object on success
+    Empty dict on failure
     """
 
-    s = Student(cursor['_id'],
-                cursor['forename'],
-                cursor['surname'],
-                cursor['profile_about'],
-                cursor['profile_image'],
-                cursor['subjects'])
+    s = {}
+    if cursor:
+        s = Student(cursor['_id'],
+                    cursor['forename'],
+                    cursor['surname'],
+                    cursor['profile_about'],
+                    cursor['profile_image'],
+                    cursor['subjects'])
+
     return s
 
 
@@ -37,11 +45,11 @@ def get_student_by_name(name, surname=None):
             name = names[0]
             surname = names[1]
 
-    if mongo.db.users.count_documents({'forename': name,
+    if database.mongo.db.users.count_documents({'forename': name,
                                        'surname': surname}) > 0:
 
         return list(map(create_student_from_cursor,
-                        mongo.db.users.find({'forename': name,
+                        database.mongo.db.users.find({'forename': name,
                                                  'surname': surname})
                         ))
 
@@ -65,7 +73,7 @@ def get_student_by_id(student_id):
     """
 
     try:
-        cursor = mongo.db.users.find_one({'_id':ObjectId(student_id)})
+        cursor = database.mongo.db.users.find_one({'_id':ObjectId(student_id)})
         return create_student_from_cursor(cursor)
     except:
         return {}
@@ -128,7 +136,7 @@ def update_student_profile(student_id,new_profile_data):
     flashed_message = ""
 
     if student.profile_about != new_profile_data['profile_about']:
-        mongo.db.users.update_one({'_id':student.id},
+        database.mongo.db.users.update_one({'_id':student.id},
                 {'$set':
                     {
                 'profile_about': new_profile_data['profile_about']
@@ -144,7 +152,7 @@ def update_student_profile(student_id,new_profile_data):
         encoded_img = base64.b64encode(new_image.read()).decode()
         filetype = new_image.filename.rsplit('.', 1)[1].lower()
         img_data = f'data:image/{filetype};base64,{encoded_img}'
-        mongo.db.users.update_one({'_id':student.id},
+        database.mongo.db.users.update_one({'_id':student.id},
                 {'$set':
                     {
                 'profile_image': img_data
