@@ -133,33 +133,27 @@ def update_student_profile(student_id,new_profile_data):
     """
 
     student = get_student_by_id(student_id) 
-    flashed_message = ""
+    flashed_message = "There was a problem updating your profile"
 
-    if student.profile_about != new_profile_data['profile_about']:
-        database.mongo.db.users.update_one({'_id':student.id},
-                {'$set':
-                    {
-                'profile_about': new_profile_data['profile_about']
-                    }
-                })
-
-        if not flashed_message:
+    if 'profile_about' in new_profile_data:
+        if student.profile_about != new_profile_data['profile_about']:
+            student.profile_about = new_profile_data['profile_about']
             flashed_message = "Profile updated."
+    
+    if 'profile_img' in new_profile_data:
+        new_image = new_profile_data['profile_img']
 
-    new_image = new_profile_data['profile_img']
+        if new_image and allowed_file(new_image.filename):
+            encoded_img = base64.b64encode(new_image.read()).decode()
+            filetype = new_image.filename.rsplit('.', 1)[1].lower()
+            img_data = f'data:image/{filetype};base64,{encoded_img}'
+            database.mongo.db.users.update_one({'_id':student.id},
+                    {'$set':
+                        {
+                    'profile_image': img_data
+                        }
+                    })
 
-    if new_image and allowed_file(new_image.filename):
-        encoded_img = base64.b64encode(new_image.read()).decode()
-        filetype = new_image.filename.rsplit('.', 1)[1].lower()
-        img_data = f'data:image/{filetype};base64,{encoded_img}'
-        database.mongo.db.users.update_one({'_id':student.id},
-                {'$set':
-                    {
-                'profile_image': img_data
-                    }
-                })
-
-        if not flashed_message:
             flashed_message = "Profile updated."
 
     return flashed_message
