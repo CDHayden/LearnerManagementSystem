@@ -3,7 +3,8 @@ flash, session, url_for)
 from bson.objectid import ObjectId
 
 import database
-from ..controllers.home_controller import log_user_in 
+from ..controllers.home_controller import ( log_user_in, 
+get_user_from_username, get_returnable_user )
 
 mod = Blueprint('home',__name__)
 
@@ -38,3 +39,11 @@ def signout():
 @mod.app_errorhandler(Exception)
 def error_handler(e):
     return render_template('home/error.html')
+
+
+@mod.route('/profile/<username>')
+def public_profile(username):
+    found_user = get_user_from_username(username) 
+    if found_user:
+        user = get_returnable_user(found_user)
+    return render_template('home/profile.html', profile = user)
