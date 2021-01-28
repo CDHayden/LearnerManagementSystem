@@ -35,7 +35,6 @@ def signout():
 
     return redirect(url_for('home.index'))
 
-@mod.route('/profile/<user_id>')
-def public_profile(user_id):
-    found_user = mongo.db.users.find_one({'_id':ObjectId(user_id)})
-    return render_template('home/profile.html', profile = found_user)
+@mod.app_errorhandler(Exception)
+def error_handler(e):
+    return render_template('home/error.html')
