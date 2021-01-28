@@ -11,10 +11,8 @@ mod = Blueprint("student", __name__)
 
 @mod.route('/')
 def student_index():
-    session['user'] = str(get_student_by_name("Chris Hayden")[0].id)
     student = get_student_by_id(session['user'])
-    return render_template('student/index.html',
-    student=student)
+    return render_template('student/index.html',student=student)
 
 
 @mod.route('/update_profile', methods=['POST'])

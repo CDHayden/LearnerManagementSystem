@@ -34,6 +34,23 @@ Learner Management System
 {% endblock %}
 
 {% block content %}
+    <!-- FLASH MESSAGES-->
+    <div class="col-12">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" id="flashedMessages" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    <!-- ./FLASH MESSAGES-->
 <div class="row">
     <div class="col col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card" id="card-signin">
@@ -41,7 +58,7 @@ Learner Management System
                 Sign in
             </div>
             <div class="card-body mx-auto">
-                <form id="form-signin">
+                <form action='/login' method='POST' id="form-signin">
                     <!-- USERNAME -->
                     <div class="form-group">
                         <label for="username" class="lbl-signin">Username:</label>

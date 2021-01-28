@@ -25,18 +25,18 @@ L.M.S - Students
                 <ol class="navbar-nav" id="menuList">
                     <li class="nav-item" id="profileLink">
                         <a id="profile-link" class="nav-link"
-							href="/student/">Profile</a>
+							href="{{url_for('student.student_index')}}">Profile</a>
 					</li>
 
                     <li class="nav-item" id="classesLink">
                         <a  id="course-link" class="nav-link" 
-							href="/student/courses">My courses</a>
+							href="{{ url_for('student.student_courses') }}">My courses</a>
                     </li>
 
                 </ol>
                 <ol class="navbar-nav ml-auto">
                     <li class="nav-item" id="signOutLink">
-                        <a href="#" class="nav-link">Sign out</a>
+                        <a href="{{ url_for('home.signout') }}" class="nav-link">Sign out</a>
                     </li>
                 </ol>
             </div>
