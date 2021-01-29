@@ -1,9 +1,37 @@
-{% extends 'base.html' %}
+{% import '/macros/profile_display_subjects.htm' as pds%}
+{% extends '/home/homebase.html' %}
 
 {% block pagetitle %}
-test
+{{profile.username}}'s profile
 {% endblock %}
 
 {% block content %}
-<h3> {{profile.firstname}} {{profile.lastname}}</h3>
+<div class="row">
+	<div class="col-12">
+		<a id="go_back" href="#" onclick="window.history.back()"> 
+			<i class="fas fa-angle-double-left"></i> Go back </a>
+	</div>
+
+	<div id="profile_username" class="col-12 col-md-10 offset-md-1
+	col-lg-8 offset-lg-2">
+		<h1> {{profile.username}} </h1>
+	</div>
+
+	<div id="profile_container" class="col-12 col-md-10 offset-md-1
+		col-lg-8 offset-lg-2">
+		<div class="image-wrapper">
+			<img src="{{profile.profile_image}}" alt="Profile Picture"
+				  class="profile-image">
+		</div>
+
+		<h3 id="profile_name"> {{profile.forename}} {{profile.surname}}</h3>
+		
+		<div id="profile_about">
+			<p>{{profile.profile_about}} </p>
+		</div>
+
+		<h4> Studying: </h4>
+		{{pds.profile_display_subjects(profile.subjects)}}
+	</div>
+</div>
 {% endblock %}

@@ -4,14 +4,18 @@ from bson.objectid import ObjectId
 
 import database
 from ..controllers.home_controller import ( log_user_in, 
-get_user_from_username, get_returnable_user )
+get_user_from_username,get_user_from_id, get_returnable_user )
 
 mod = Blueprint('home',__name__)
 
 @mod.route('/')
 def index():
-    if session.get('user'):
-        return redirect(url_for('student.student_index'))
+    user = session.get('user')
+    if user:
+        if get_user_from_id(user)['is_teacher']:
+            return redirect(url_for('staff.staff_index'))
+        else:
+            return redirect(url_for('student.student_index'))
 
     return render_template('home/index.html')
 
@@ -24,9 +28,12 @@ def login():
         user = log_user_in(username, password)
         if user:
             session['user'] = user['id']
-            return redirect(url_for('student.student_index')) 
+            if user['is_teacher']:
+                return redirect(url_for('staff.staff_index')) 
+            else:
+                return redirect(url_for('student.student_index')) 
         
-    flash("Login failed.")
+    flash("Login failed","alert-danger")
     return redirect(url_for('home.index'))
 
 @mod.route('/signout')

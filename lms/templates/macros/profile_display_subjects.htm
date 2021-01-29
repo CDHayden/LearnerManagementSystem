@@ -1,0 +1,13 @@
+{% macro profile_display_subjects(subjects) -%}
+<ul>
+	{% for subject in subjects %}
+	<li> {{subject}} </li>
+		{% for course in subjects[subject] %}
+		<ul>
+			 <li>{{course}}</li>
+		</ul>
+		{% endfor %}
+	{% endfor %}
+</ul>
+{%- endmacro %}
+
