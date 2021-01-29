@@ -1,0 +1,400 @@
+:root {
+/*
+ **** COLOUR VARIABLES
+ */
+    --main-white-colour: hsl(0, 100.0%, 100%);
+    --main-blue-colour: hsl(199, 44%, 22%);
+    --light-blue-color: hsl(199, 18%, 44%);
+    --dark-blue-colour: hsl(199, 93%, 11%);
+    --dark-opaque-overlay: hsla(0, 0%, 0%, 0.5);
+    --light-opaque-overlay: hsla(0, 0%, 100%, 0.5);
+    --light-orange-highlight: hsl(33, 59%, 38%);
+    --lightest-orange-highlight: hsl(33, 71%, 66%);
+}
+
+
+body {
+    height: 100%;
+    background-color: hsla(199, 18%, 44%,0.1);
+    color: var(--main-blue-colour);
+}
+
+
+/***********************************************************
+ *                       STUDENTBASE                       *
+ ***********************************************************/
+
+ /*
+  **** MENU
+  */
+.navbar-brand {
+    font-family: 'Hind Vadodara', sans-serif;
+	margin-left: 1rem;
+}
+
+/*
+ * Help with how to recolour the bootstrap navbar items was found here:
+ https://stackoverflow.com/questions/43381596/bootstrap-4-navbar-color
+ */
+
+ #menu-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.navbar-custom {
+    border-top: 0.4286rem solid var(--dark-blue-colour);
+    margin: 0;
+    box-shadow: 0 0.1429rem 0.3rem var(--dark-opaque-overlay);
+    background-color: var(--ligt-blue-colour);
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text{
+    color: var(--dark-blue-colour);
+    font-weight: 480;
+}
+
+.navbar-custom .navbar-nav .nav-link{
+    display: inline-block;
+    color: var(--dark-blue-colour);
+    letter-spacing: 0.1rem;
+    font-size: 1.143rem;
+}
+
+.navbar-custom .nav-item .nav-link:focus,
+.navbar-custom .nav-item .nav-link:hover {
+    font-weight: 600;
+}
+
+.navbar-custom .active{
+    font-weight: 600;
+}
+
+/***********************************************************
+ *                       STUDENT/                          *
+ ***********************************************************/
+/*
+ *****************  FLASHED MESSAGES
+ */
+ #flashedMessages{
+     text-align: center;
+ }
+
+ /*
+ *****************   EDIT PROFILE MODAL
+ */
+
+ /*
+  **** FORM
+  */
+ #oldImage, #newImage{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#newImage{
+    margin-top: 2rem;
+}
+
+#aboutText{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+#aboutTextLabel{
+    align-self: center;
+}
+
+#modalButtons{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+
+input[type="file"]{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputFileLabel{
+   font-size: 1rem;
+   color: var(--main-white-colour);
+   background-color: var(--main-blue-colour);
+   padding: 0.5rem;
+   display: inline-block;
+   cursor: pointer;
+   text-align: center;
+}
+
+.inputFileLabel > i{
+    font-size:1rem;
+    padding-right: 0.25rem;
+}
+
+.inputFileLabel:hover{
+    background-color:var(--light-blue-color);
+}
+
+.inputFileLabel:focus-within{
+    outline: 0.3571rem solid var(--light-orange-highlight);
+}
+
+.btn-cancel{
+    color: var(--main-blue-colour);
+    background-color: var(--main-white-colour);
+    border: 1px solid var(--main-blue-colour);
+}
+
+.btn-save{
+    color: var(--main-white-colour);
+    background-color: var(--main-blue-colour);
+}
+
+.btn-save:hover, .btn-cancel:hover{
+   font-weight: 700;
+}
+
+.btn-save:hover{
+    color: var(--main-white-colour);
+}
+
+.btn-cancel:hover{
+    color: var(--main-blue-colour);
+}
+
+.modal-footer{
+    background-color: var(--main-blue-colour);
+}
+
+.modal-header{
+    background-color: var(--main-blue-colour);
+    color: var(--main-white-colour);
+    text-align: center;
+}
+
+.modal-title{
+    width: 100%;
+}
+
+
+/* ***************** PROFILE
+
+/*
+ **** EDIT PROFILE LINK
+ */
+
+#edit-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+}
+
+#edit-profile>a {
+    display: inline-block;
+    color: var(--dark-blue-color);
+    letter-spacing: 0.1rem;
+    font-weight: 480;
+    text-decoration: none;
+
+    transition: letter-spacing .5s;
+}
+
+#edit-profile>a>i {
+    color: var(--light-orange-highlight)
+}
+
+#edit-profile>a::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: var(--light-orange-highlight);
+    transition: all .3s;
+}
+
+#edit-profile>a:hover {
+    letter-spacing: initial;
+    font-weight: 600;
+}
+
+#edit-profile>a:hover::before {
+    width: 100%;
+}
+
+/*
+ ****   PROFILE IMAGE
+ */
+
+ .image-wrapper{
+     height: 8.929rem;
+     width: 8.929rem;
+     border-radius: 50%;
+     margin-left: auto;
+     margin-right: auto;
+     box-shadow: 0 0.1rem 1rem var(--dark-opaque-overlay),
+     0 -0.5rem 3rem var(--dark-opaque-overlay);
+     overflow: hidden;
+ }
+
+.profile-image{
+    width: 8.929rem; /* 125px */
+
+}
+
+#profile-image-bg {
+    margin-top: -5rem;
+    background-color: var(--light-blue-color);
+    background: linear-gradient(360deg, var(--dark-blue-colour),
+                var(--main-blue-colour),
+                var(--light-blue-color));
+    min-height: 1.5rem;
+    z-index: -1;
+    box-shadow: 0 -0.1429rem 0.3rem var(--dark-opaque-overlay);
+}
+
+
+/*
+ **** PROFILE NAME
+ */
+
+#profile-name {
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: var(--dark-blue-colour);
+    z-index: -1;
+    color: var(--main-white-colour);
+}
+
+#profile-name>h1 {
+    font-weight: 650;
+}
+
+/*
+ **** PROFILE ABOUT
+ */
+
+#profile-about {
+    color: var(--dark-blue-colour);
+    background-color: var(--main-white-colour);
+    padding-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#profile-about > p {
+    padding-left: 2rem;
+    font-size: 1.2rem;
+}
+
+#about-title {
+    align-self: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1429rem;
+}
+
+/*
+ **** MEDIA QUERIES
+ */
+
+@media(min-width: 768px) {
+    .image-wrapper{
+        height: 10.71rem;
+        width: 10.71rem;
+    }
+    .profile-image {
+        width: 10.71rem; /* 150px */
+    }
+
+    #profile-about {
+        margin-top: 3rem;
+        border: 0.1429rem solid var(--dark-blue-colour);
+        padding: 3rem 2rem;
+        box-shadow: 0.1429rem 0.4286rem 1.357rem var(--dark-opaque-overlay);
+        border-radius: 1rem;
+    }
+
+    #profile-name{
+        padding-top: 0;
+    }
+
+    #oldImage{
+        align-items: flex-end;
+    }
+    #newImage{
+        align-items: flex-start;
+    }
+}
+
+@media(min-width: 992px) {
+    .image-wrapper{
+        height: 14.20rem;
+        width: 14.29rem;
+    }
+    .profile-image {
+        width: 14.29rem; /* 200px */
+    }
+}
+
+/***********************************************************
+ *                 STUDENT/CLASSES                         *
+ ***********************************************************/
+
+ #pageTitle{
+    background-color: var(--main-blue-colour);
+    color: var(--main-white-colour);
+    z-index: -1;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+#pageTitle > h1{
+    font-size: 1.75rem;
+}
+
+/***** CLASS CONTENT *****/
+.accordion{
+	padding-left: 0;	
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000000;
+    background-color: transparent;
+}
+
+.course-menu-list{
+	padding: 0;
+	list-style-type: none;
+}
+
+.course-menu-list li a{
+	cursor: pointer;
+	color: var(--dark-blue-colour);
+	font-weight: bold;
+	text-decoration:none;
+}
+
+#courseContent{
+	padding-top: 2rem;
+    text-align: center;
+    background-color: var(--main-white-colour);
+}
+
+#subjectName{
+	text-decoration: underline;
+}
+

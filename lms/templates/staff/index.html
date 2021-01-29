@@ -6,7 +6,149 @@ Learner Management System
 
 
 {% block content %}
+<!-- EDIT PROFILE LINK-->
 <div class="row">
-    <h3> {{ user.forename }} {{ user.surname }}</h3>
+    <div class="col-12" id="edit-profile">
+        <a href="#" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+            <i class="far fa-edit"></i> Edit profile </a>
+    </div>
+    <!-- ./EDIT PROFILE LINK-->
+
+    <!-- EDIT PROFILE MODAL -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+
+                <!-- MODAL HEADER CONTENT-->
+                <div class="modal-header">
+                    <h5 class="modal-title">{{user.forename}}'s Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- ./MODAL HEADER CONTENT-->
+
+
+                <!-- MODAL BODY CONTENT -->
+                <div class="modal-body">
+                    <form action="{{ ('user.update_profile') }}" method="POST" enctype="multipart/form-data">
+                        <!-- PROFILE IMAGE-->
+                        <div class="row">
+                            <!-- CURRENT IMAGE -->
+                            <div class="col-12 col-md-6" id="oldImage">
+                                <div class="image-wrapper">
+                                    <img src="{{user.profile_image}}" alt="profile picture" class="profile-image">
+                                </div>
+
+                            </div>
+                            <!-- ./CURRENT IMAGE-->
+                            <!-- SELECT NEW IMAGE-->
+                            <div class="col-12 col-md-6" id="newImage">
+                                <div class="form-group">
+                                    <label for="profilePicture" class="inputFileLabel">
+                                        <input type="file" name="profile_image" id="profilePicture" accept="image/*"
+                                            onchange="previewFile()">
+                                        <i class="fas fa-upload"></i>
+                                        Upload new picture
+                                    </label>
+                                    <input type="hidden" name="image_base64" id="image_base64">
+                                </div>
+                            </div>
+                            <!-- ./SELECT NEW IMAGE-->
+
+                        </div>
+                        <!-- ./ PROFILE IMAGE -->
+
+                        <!-- ABOUT ME TEXT -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group" id="aboutText">
+                                    <label for="profileAboutText" id="aboutTextLabel">About me:</label>
+                                    <textarea class="form-control" name="profile_about" id="profileAboutText"
+                                        rows="3">{{user.profile_about}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ./ ABOUT ME TEXT-->
+
+                        <!-- BUTTONS -->
+                        <div class="row">
+                            <div class="col-12" id="modalButtons">
+                                <button type="button" class="btn
+									btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-save" value="Submit">Save</button>
+                            </div>
+                        </div>
+                        <!-- ./BUTTONS -->
+                    </form>
+                </div>
+                <!-- ./MODAL BODY COTNENT -->
+
+                <!-- MODAL FOOTER CONTENT -->
+                <div class="modal-footer">
+                </div>
+                <!-- ./MODAL FOOTER CONTENT -->
+
+            </div>
+        </div>
+    </div>
+    <!-- ./EDIT PROFILE MODAL -->
+
+    <!-- PROFILE IMAGE -->
+    <div class="col-12">
+        <div class="image-wrapper">
+            <img src="{{user.profile_image}}" alt="profile picture" class="profile-image">
+        </div>
+    </div>
+    <!-- ./PROFILE IMAGE-->
+
+    <!-- PROFILE IMAGE BACKGROUND-->
+    <div class="col-12" id="profile-image-bg">
+    </div>
+    <!-- PROFILE IMAGE BACKGROUND-->
+
+    <!-- PROFILE NAME-->
+    <div class="col-12" id="profile-name">
+        <h1>{{user.forename}} {{user.surname}} </h1>
+    </div>
+    <!-- ./PROFILE NAME-->
+
+    <!-- PROFILE ABOUT-->
+    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" id="profile-about">
+        <h2 id="about-title"> About </h2>
+        <p> {{user.profile_about}} </p>
+    </div>
+    <!-- ./PROFILE ABOUT-->
 </div>
+{% endblock %}
+
+
+{% block late_optional_includes %}
+<script>
+
+    /*
+        Taken from https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+    */
+    function previewFile() {
+        const preview = document.querySelector('#oldImage .image-wrapper>img');
+        const file = document.querySelector('input[type=file]').files[0];
+
+        if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+document.addEventListener('DOMContentLoaded', (event)=> {
+	selectActiveMenuItem('profile-link');
+});
+
+</script>
 {% endblock %}

@@ -11,7 +11,7 @@ L.M.S
 
 {% block menu %}
 <!-- Nav bar code taken from Boostrap documentation. https://getbootstrap.com/docs/4.4/components/navbar/ -->
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-expand-md navbar-custom">
 	<a class="navbar-brand"
 	   href="{{url_for('home.index',_external=True)}}">LMS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeMenuContent"
@@ -25,11 +25,11 @@ L.M.S
 				   href="{{url_for('staff.staff_index')}}">Profile </a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link"
 				   href="{{url_for('staff.staff_classes')}}">Manage classes<a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link"
 				   href="{{url_for('staff.manage_students')}}">Manage students</a>
             </li>
