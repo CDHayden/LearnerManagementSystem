@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block optional_includes %}
+<script src="https://kit.fontawesome.com/6faf9e6e8d.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{{url_for('static',filename='css/staff/style.css')}}">
+{% endblock %}
+
+{% block pagetitle %}
+L.M.S 
+{% endblock %}
+
+{% block menu %}
+<!-- Nav bar code taken from Boostrap documentation. https://getbootstrap.com/docs/4.4/components/navbar/ -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+	<a class="navbar-brand"
+	   href="{{url_for('home.index',_external=True)}}">LMS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeMenuContent"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="homeMenuContent">
+        <ol class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link"
+				   href="{{url_for('staff.staff_index')}}">Profile </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link"
+				   href="{{url_for('staff.staff_classes')}}">Manage classes<a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link"
+				   href="{{url_for('staff.manage_students')}}">Manage students</a>
+            </li>
+
+            <li class="nav-item">
+				<a href="{{url_for('home.signout', _external=True)}}" class="nav-link">Sign out</a>
+            </li>
+        </ol>
+    </div>
+</nav>
+{% endblock %}
+
