@@ -1,4 +1,23 @@
 /* Anchor the navbar at the bottom of the jumbotron */
+html{
+	height: 100%;
+}
+
+body{
+	height: 100%;
+	font-family: 'Khula', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Hind Vadodara', sans-serif;
+}
+
+/* Make all images responsive */
+img{
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
 
 .jumbotron {
     padding-bottom: 0;
@@ -19,4 +38,14 @@
     -webkit-box-shadow: 2px 6px 19px 2px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 2px 6px 19px 2px rgba(0, 0, 0, 0.4);
     box-shadow: 2px 6px 19px 2px rgba(0, 0, 0, 0.4);
+}
+
+.error-header{
+	text-align: center;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.error-body{
+	text-align: center;
 }

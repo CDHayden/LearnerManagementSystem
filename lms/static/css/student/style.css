@@ -12,26 +12,11 @@
     --lighest-green-highlight: hsl(159, 100.0%, 95.0%);
 }
 
-html{
-    height: 100%;
-}
 
 body {
     height: 100%;
     background-color: hsla(288, 41%, 39%,0.1);
     color: var(--main-purple-colour);
-    font-family: 'Khula', sans-serif;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Hind Vadodara', sans-serif;
-}
-
-/* Make all images responsive */
-img{
-    max-width: 100%;
-    display: block;
-    height: auto;
 }
 
 
@@ -334,6 +319,7 @@ input[type="file"]{
     .profile-image {
         width: 10.71rem; /* 150px */
     }
+
     #profile-about {
         margin-top: 3rem;
         border: 0.1429rem solid var(--dark-purple-colour);
