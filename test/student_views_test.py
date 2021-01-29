@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 
 from lms import create_app
 import database
-from lms.models.student_model import Student
+from lms.models.user_model import User
 
 
 class TestStudentViews(unittest.TestCase):

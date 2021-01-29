@@ -2,9 +2,9 @@ from bson.objectid import ObjectId
 
 import database
 
-class Student:
+class User:
     """ 
-    A class used to represent a student
+    A class used to represent a user
 
     """
 
@@ -20,17 +20,17 @@ class Student:
         Parameters
         ----------
         id : str
-            The ObjectId for this student
+            The ObjectId for this user
         forename: str
-            Forename of the student
+            Forename of the user
         surname : str
-            Surname of the student
+            Surname of the user
         profile_about : str
-            The about text written on the student's profile
+            The about text written on the user's profile
         profile_image : str
-            Base64 encoded string for the student's profile image
+            Base64 encoded string for the user's profile image
         Subjects : List[object]
-            A list of course objects for each course the student is 
+            A list of course objects for each course the user is 
             enrolled on.
         """
 
@@ -95,7 +95,7 @@ class Student:
     # values of common keys" and tweaked it slightly.
     def add_course(self, new_course):
         """ Adds a new course to the list of courses studied by this
-        student
+        user
 
         Parameters
         ----------
@@ -113,7 +113,7 @@ class Student:
 
     def delete_course(self, subject_name, course_name):
         """Deletes a course from the list of courses studied by
-        this student (if found)
+        this user (if found)
 
         Parameters
         ----------

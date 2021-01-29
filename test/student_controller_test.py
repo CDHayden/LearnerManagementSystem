@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 
 from lms import create_app
 import database
-from lms.models.student_model import Student
+from lms.models.user_model import User
 from lms.controllers.student_controller import (get_student_by_id, 
 create_student_from_cursor, get_subject_content, allowed_file,
 update_student_profile)
@@ -47,7 +47,7 @@ class TestStudentController(unittest.TestCase):
     def test_can_create_student_from_cursor(self):
         cursor = database.mongo.db.users.find_one({"forename":"Chris"})
         student = create_student_from_cursor(cursor)
-        self.assertIsInstance(student,Student)
+        self.assertIsInstance(student,User)
 
     def test_can_create_student_from_cursor_fails(self):
         cursor = database.mongo.db.users.find_one({"forename":"Bob"})
@@ -57,7 +57,7 @@ class TestStudentController(unittest.TestCase):
 
     def test_can_get_student_by_id(self):
         student = get_student_by_id(ObjectId(b'testStudent1'))
-        self.assertIsInstance(student,Student)
+        self.assertIsInstance(student,User)
         
     def test_can_get_student_by_id_fails(self):
         test_id = ObjectId(b'testStudent2')

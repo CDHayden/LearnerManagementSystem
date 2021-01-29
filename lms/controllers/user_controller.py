@@ -2,28 +2,28 @@ import base64
 from bson.objectid import ObjectId
 from os import environ
 
-from ..models.student_model import Student
+from ..models.user_model import User
 import database
 
 
-def create_student_from_cursor(cursor):
+def create_user_from_cursor(cursor):
     """
-    Returns a student object populated with data from a pymongo cursor
+    Returns a user object populated with data from a pymongo cursor
 
     Parameters
     ----------
     cursor : pymongo_cursor
-    Database information to load into student object
+    Database information to load into user object
 
     Returns
     -------
-    Student Object on success
+    User Object on success
     Empty dict on failure
     """
 
     s = {}
     if cursor:
-        s = Student(cursor['_id'],
+        s = User(cursor['_id'],
                     cursor['forename'],
                     cursor['surname'],
                     cursor['profile_about'],
@@ -33,8 +33,8 @@ def create_student_from_cursor(cursor):
     return s
 
 
-#Accepts get_student_by_name("Bob Loblaw") and get_student_by_name("Bob", "Loblaw")
-def get_student_by_name(name, surname=None):
+#Accepts get_user_by_name("Bob Loblaw") and get_user_by_name("Bob", "Loblaw")
+def get_user_by_name(name, surname=None):
     #If name is one variable seperated by space
     #Split it and store those values in name and surname
     if surname is None:
@@ -48,45 +48,45 @@ def get_student_by_name(name, surname=None):
     if database.mongo.db.users.count_documents({'forename': name,
                                        'surname': surname}) > 0:
 
-        return list(map(create_student_from_cursor,
+        return list(map(create_user_from_cursor,
                         database.mongo.db.users.find({'forename': name,
                                                  'surname': surname})
                         ))
 
     else:
-        raise NameError(f"Student {name} {surname} could not be found.")
+        raise NameError(f"User {name} {surname} could not be found.")
 
 
-def get_student_by_id(student_id):
+def get_user_by_id(user_id):
     """
-    Returns Student object for student of student_id
+    Returns User object for user of user_id
 
     Parameters
     ----------
-    student_id : str
-    Unique ID of student
+    user_id : str
+    Unique ID of user
 
     Returns
     -------
     Empty dict on error
-    Otherwise a student object (see /models/student_model.py)
+    Otherwise a user object (see /models/user_model.py)
     """
 
     try:
-        cursor = database.mongo.db.users.find_one({'_id':ObjectId(student_id)})
-        return create_student_from_cursor(cursor)
+        cursor = database.mongo.db.users.find_one({'_id':ObjectId(user_id)})
+        return create_user_from_cursor(cursor)
     except:
         return {}
 
 
-def get_subject_content(student_id, subject_name):
+def get_subject_content(user_id, subject_name):
     """
-    Returns an overview of a subject for a student
+    Returns an overview of a subject for a user
 
     Parameters
     ----------
-    student_id : str
-    ID of the student to use
+    user_id : str
+    ID of the user to use
     subject_name : str
     Name of the subject we want to overview of
 
@@ -96,9 +96,9 @@ def get_subject_content(student_id, subject_name):
     On success: {'avg_grade':float, 'num_courses': int}
     """
     total = 0
-    student = get_student_by_id(student_id)
-    if student and subject_name in student.subjects:
-        subject = student.subjects[subject_name]
+    user = get_user_by_id(user_id)
+    if user and subject_name in user.subjects:
+        subject = user.subjects[subject_name]
         for course in subject:
             total = total + subject[course]['grade']
         avg_grade = round(total / len(subject),2)
@@ -119,26 +119,26 @@ def allowed_file(filename):
         environ.get('ALLOWED_EXTENSIONS')
 
 
-def update_student_profile(student_id,new_profile_data):
+def update_user_profile(user_id,new_profile_data):
     """
-    Updates students profile about and image if changed
+    Updates users profile about and image if changed
 
     Parameters
     ----------
-    student_id : str
-    Unique ID of student
+    user_id : str
+    Unique ID of user
 
     profile_data : dict
     { 'profile_about':str, profile_img: }
     """
 
-    student = get_student_by_id(student_id) 
-    flashed_message = "There was a problem updating your profile"
+    user = get_user_by_id(user_id) 
+    flashed_message = ("There was a problem updating your profile","alert-danger")
 
     if 'profile_about' in new_profile_data:
-        if student.profile_about != new_profile_data['profile_about']:
-            student.profile_about = new_profile_data['profile_about']
-            flashed_message = "Profile updated."
+        if user.profile_about != new_profile_data['profile_about']:
+            user.profile_about = new_profile_data['profile_about']
+            flashed_message = ("Profile updated.","alert-success")
     
     if 'profile_img' in new_profile_data:
         new_image = new_profile_data['profile_img']
@@ -147,13 +147,12 @@ def update_student_profile(student_id,new_profile_data):
             encoded_img = base64.b64encode(new_image.read()).decode()
             filetype = new_image.filename.rsplit('.', 1)[1].lower()
             img_data = f'data:image/{filetype};base64,{encoded_img}'
-            database.mongo.db.users.update_one({'_id':student.id},
+            database.mongo.db.users.update_one({'_id':user.id},
                     {'$set':
                         {
                     'profile_image': img_data
                         }
                     })
 
-            flashed_message = "Profile updated."
-
+            flashed_message = ("Profile updated.", "alert-success") 
     return flashed_message

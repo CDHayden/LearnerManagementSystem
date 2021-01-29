@@ -6,10 +6,10 @@ from bson.objectid import ObjectId
 
 from lms import create_app
 import database
-from lms.models.student_model import Student
+from lms.models.user_model import User
 
 
-class TestStudentModel(unittest.TestCase):
+class TestUserModel(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.patcher = patch('flask_pymongo.MongoClient',
@@ -24,7 +24,7 @@ class TestStudentModel(unittest.TestCase):
 
     def setUp(self):
         database.mongo.db.users.insert_one( {
-                    "_id":ObjectId(b'testStudent1'),
+                    "_id":ObjectId(b'123456789abc'),
                     "forename":"Chris",
                     "surname":"Hayden",
                     "profile_about":"me",
@@ -41,48 +41,48 @@ class TestStudentModel(unittest.TestCase):
     def tearDown(self):
         database.mongo.db.users.drop()
     
-    def get_student_object(self):
+    def get_user_object(self):
         cursor = database.mongo.db.users.find_one({"forename":"Chris"})
-        student = Student(cursor['_id'],
+        user = User(cursor['_id'],
                         cursor['forename'],
                         cursor['surname'],
                         cursor['profile_about'],
                         cursor['profile_image'],
                         cursor['subjects']
                         )
-        return student
+        return user
 
-    def test_can_create_student_object(self):
-        self.assertIsInstance(self.get_student_object(), Student)
+    def test_can_create_user_object(self):
+        self.assertIsInstance(self.get_user_object(), User)
             
 
     def test_can_get_forename(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         expected = "Chris"
-        self.assertEqual(expected,student.forename)
+        self.assertEqual(expected,user.forename)
 
     def test_can_get_surname(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         expected = "Hayden"
-        self.assertEqual(expected,student.surname)
+        self.assertEqual(expected,user.surname)
 
     def test_can_get_profile_about(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         expected = "me"
-        self.assertEqual(expected,student.profile_about)
+        self.assertEqual(expected,user.profile_about)
 
     def test_can_get_profile_image(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         expected = "no"
-        self.assertEqual(expected,student.profile_image)
+        self.assertEqual(expected,user.profile_image)
 
     def test_can_get_subjects(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         expected = {"spanish":{"speaking":{"grade":10}}}
-        self.assertEqual(expected,student.subjects)
+        self.assertEqual(expected,user.subjects)
 
     def test_can_add_course_to_existing_subject(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         new_course = {"spanish":{"listening":{"grade":25}}} 
         expected = {"spanish":
                         {
@@ -91,11 +91,11 @@ class TestStudentModel(unittest.TestCase):
                         },
                    }
 
-        student.add_course(new_course)
-        self.assertEqual(student.subjects,expected)
+        user.add_course(new_course)
+        self.assertEqual(user.subjects,expected)
 
     def test_can_add_course_and_new_subject(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         new_course = {"english":{"writing":{"grade":25}}} 
         expected = {"english":
                         {
@@ -107,30 +107,30 @@ class TestStudentModel(unittest.TestCase):
                         },
                    }
 
-        student.add_course(new_course)
-        self.assertEqual(student.subjects,expected)
+        user.add_course(new_course)
+        self.assertEqual(user.subjects,expected)
 
     def test_can_edit_existing_subject_course(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         updated_course = {"spanish":{"speaking":{"grade":25}}} 
-        student.add_course(updated_course)
-        self.assertEqual(student.subjects,updated_course)
+        user.add_course(updated_course)
+        self.assertEqual(user.subjects,updated_course)
 
 
     def test_can_delete_course_keep_subject(self):
-        student = self.get_student_object()
+        user = self.get_user_object()
         new_course = {"spanish":{"listening":{"grade":25}}} 
-        student.add_course(new_course)
-        value = student.delete_course("spanish","speaking")
+        user.add_course(new_course)
+        value = user.delete_course("spanish","speaking")
         self.assertTrue(value)
 
     def test_can_delete_course_delete_subject(self):
-        student = self.get_student_object()
-        value = student.delete_course("spanish","speaking")
+        user = self.get_user_object()
+        value = user.delete_course("spanish","speaking")
 
         with self.subTest():
             self.assertTrue(value)
 
         with self.subTest():
-            subject = student.subjects
+            subject = user.subjects
             self.assertEqual({ },subject)
