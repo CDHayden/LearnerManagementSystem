@@ -11,3 +11,36 @@
 </ul>
 {%- endmacro %}
 
+{% macro generate_course_menu(subjects) -%}
+<div class="accordion accordion-flush" id="courseMenu">
+	{% for subject in subjects %}
+	  <div class="accordion-item">
+		<h2 class="accordion-header" id="flush-heading{{loop.index}}">
+		  <button class="accordion-button collapsed subject-content-link" type="button"
+			  data-bs-toggle="collapse"
+			  data-bs-target="#flush-collapse{{loop.index}}"
+			  aria-expanded="false"
+			  aria-controls="flush-collapse{{loop.index}}">
+			   {{subject}} 
+		  </button>
+		</h2>
+		<div id="flush-collapse{{loop.index}}" class="accordion-collapse
+			collapse" aria-labelledby="flush-heading{{loop.index}}"
+			data-bs-parent="#courseMenu">
+					 <div class="accordion-body">
+						 <ul class="course-menu-list">
+							{% for course in subjects[subject] %}
+								 <li>
+									 <a class="course-content-link">
+										 {{course}}
+									 </a> 
+								 </li>
+							{% endfor %}
+						 </ul>
+					 </div>
+		</div>
+	  </div>
+	{% endfor %}
+</div>
+{%- endmacro %}
+
