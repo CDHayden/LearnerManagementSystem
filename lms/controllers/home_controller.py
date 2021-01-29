@@ -27,16 +27,13 @@ def log_user_in(username, password):
     """
 
     if not username or not password:
-        print("no credentials")
         return False
 
     user = get_user_from_username(username) 
     if not user:
-        print("user not exist")
         return False
 
     if not check_password_hash(user['password'], password):
-        print("bad password")
         return False
 
     return get_returnable_user(user)
