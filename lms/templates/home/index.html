@@ -1,56 +1,11 @@
-{% extends 'base.html' %}
+{% extends '/home/homebase.html' %}
 
 {% block pagetitle %}
 Learner Management System
 {% endblock %}
 
-{% block menu %}
-<!-- Nav bar code taken from Boostrap documentation. https://getbootstrap.com/docs/4.4/components/navbar/ -->
-<nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="navbar-brand" href="#">LMS</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeMenuContent"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="homeMenuContent">
-        <ol class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">Tests</a>
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">Python tests</a>
-                    <a href="#" class="dropdown-item">Javascript tests</a>
-                </div>
-            </li>
-        </ol>
-    </div>
-</nav>
-{% endblock %}
-
 {% block content %}
-    <!-- FLASH MESSAGES-->
-    <div class="col-12">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success" id="flashedMessages" role="alert">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
 
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
-    <!-- ./FLASH MESSAGES-->
 <div class="row">
     <div class="col col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card" id="card-signin">
@@ -83,5 +38,4 @@ Learner Management System
         </div>
     </div>
 </div>
-
 {% endblock %}

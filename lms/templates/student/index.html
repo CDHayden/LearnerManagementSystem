@@ -91,25 +91,6 @@
     </div>
     <!-- ./EDIT PROFILE MODAL -->
 
-    <!-- FLASH MESSAGES-->
-    <div class="col-12">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-success" id="flashedMessages" role="alert">
-            {{message}}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-    </div>
-    <!-- ./FLASH MESSAGES-->
-
-
     <!-- PROFILE IMAGE -->
     <div class="col-12">
         <div class="image-wrapper">
