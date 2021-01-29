@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 import database
 from .views.home import mod as home
 from .views.student import mod as student
-from .views.admin import mod as admin
 from .views.staff import mod as staff
 
 def create_app(db_uri=None):
@@ -28,7 +27,6 @@ def create_app(db_uri=None):
 
     app.register_blueprint(home)
     app.register_blueprint(student, url_prefix="/student")
-    app.register_blueprint(admin, url_prefix="/admin")
     app.register_blueprint(staff, url_prefix="/staff")
 
     return app
