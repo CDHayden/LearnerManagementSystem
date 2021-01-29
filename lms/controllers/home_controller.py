@@ -1,4 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+from bson.objectid import ObjectId
 import database
 
 def get_returnable_user(user):
@@ -9,7 +10,11 @@ def get_returnable_user(user):
     return user
 
 def get_user_from_username(username):
-    return database.mongo.db.users.find_one({'username':username.lower()})
+    return database.mongo.db.users.find_one(
+            {'username':username.lower()})
+
+def get_user_from_id(_id):
+    return database.mongo.db.users.find_one({'_id':ObjectId(_id)})
 
 def log_user_in(username, password):
     """ check to see if user credentials match a db record, if so return
