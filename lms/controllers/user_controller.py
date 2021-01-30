@@ -81,7 +81,8 @@ def get_user_by_id(user_id):
         return {}
 
 def generate_menu_items(user_id):
-    pipeline = [ {"$unwind": "$subjects"},
+    pipeline = [{"$match": {"_id":ObjectId(user_id)}}, 
+                {"$unwind": "$subjects"},
                 {"$group": 
                     {
                         "_id":"$subjects.subject",
