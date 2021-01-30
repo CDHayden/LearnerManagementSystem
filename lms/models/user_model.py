@@ -10,6 +10,7 @@ class User:
 
     def __init__(self,
                  id,
+                 username,
                  forename,
                  surname,
                  profile_about,
@@ -21,6 +22,8 @@ class User:
         ----------
         id : str
             The ObjectId for this user
+        username: str
+            Username of the user
         forename: str
             Forename of the user
         surname : str
@@ -35,6 +38,7 @@ class User:
         """
 
         self._id = ObjectId(id)
+        self._username = username
         self._forename = forename
         self._surname = surname
         self._profile_about = profile_about
@@ -45,6 +49,10 @@ class User:
     @property
     def id(self):
         return self._id
+
+    @property
+    def username(self):
+        return self._username
 
     @property
     def forename(self):
