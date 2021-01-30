@@ -97,10 +97,8 @@ class User:
     @property
     def subjects(self):
         return self._subjects
-    
-    # https://thispointer.com/how-to-merge-two-or-more-dictionaries-in-python/
-    # I used the code from here "(Merge two dictionaries and add
-    # values of common keys" and tweaked it slightly.
+
+
     def add_course(self, new_course):
         """ Adds a new course to the list of courses studied by this
         user
@@ -108,16 +106,32 @@ class User:
         Parameters
         ----------
         new_course : dict
-        {"subject_name":{"course_name":{"grade":int}}}
+        {subject:str,course:str,grade:int}
         """
-        new_subjects = {**self._subjects, **new_course}
-        for key,value in new_subjects.items():
-            if key in new_course and key in self._subjects:
-                new_subjects[key].update(self._subjects[key])
-
-        self._subjects = new_subjects
-        database.mongo.db.users.update_one(self._filter, {"$set": 
-            {'subjects': new_subjects}})
+        for subject in self._subjects:
+            #If the subject and course already exist, update the grade
+            if subject['subject'] == new_course['subject']:
+                if subject['course'] == new_course['course']:
+                    subject['grade'] = new_course['grade']
+                    database.mongo.db.users.update_one(
+                            self._filter, 
+                            {"$set":
+                                {"subjects.$[elem].grade":new_course['grade']}},
+                                array_filters = [ 
+                                    {
+                                    "elem.subject":new_course['subject'],
+                                     "elem.course":new_course['course']
+                                     }
+                                    ]
+                            )
+                    return
+        
+        #If we reach here,the course and subject are new so add
+        #the new object
+        database.mongo.db.users.update_one(self._filter,
+                {'$addToSet': {'subjects':new_course}})
+    
+        self._subjects.append(new_course)
 
     def delete_course(self, subject_name, course_name):
         """Deletes a course from the list of courses studied by
