@@ -17,7 +17,7 @@ class User:
                  profile_image,
                  subjects
                  ): 
-        """ 
+        """
         Parameters
         ----------
         id : str
@@ -61,7 +61,7 @@ class User:
     @forename.setter
     def forename(self, value):
         self._forename = value
-        database.mongo.db.users.update_one(self._filter, {"$set": {'forename':
+        database.mongo.db.users.update_one(self._filter, {"$set": {"forename":
             value}})
 
     @property
@@ -71,7 +71,7 @@ class User:
     @surname.setter
     def surname(self, value):
         self._surname = value
-        database.mongo.db.users.update_one(self._filter, {"$set": {'surname':
+        database.mongo.db.users.update_one(self._filter, {"$set": {"surname":
             value}})
 
     @property
@@ -81,7 +81,7 @@ class User:
     @profile_about.setter
     def profile_about(self, value):
         self._profile_about = value
-        database.mongo.db.users.update_one(self._filter, {"$set": {'profile_about':
+        database.mongo.db.users.update_one(self._filter, {"$set": {"profile_about":
             value}})
 
     @property
@@ -91,7 +91,7 @@ class User:
     @profile_image.setter
     def profile_image(self, value):
         self._profile_img = value
-        database.mongo.db.users.update_one(self._filter, {"$set": {'profile_image':
+        database.mongo.db.users.update_one(self._filter, {"$set": {"profile_image":
             value}})
 
     @property
@@ -110,17 +110,17 @@ class User:
         """
         for subject in self._subjects:
             #If the subject and course already exist, update the grade
-            if subject['subject'] == new_course['subject']:
-                if subject['course'] == new_course['course']:
-                    subject['grade'] = new_course['grade']
+            if subject["subject"] == new_course["subject"]:
+                if subject["course"] == new_course["course"]:
+                    subject["grade"] = new_course["grade"]
                     database.mongo.db.users.update_one(
                             self._filter, 
                             {"$set":
-                                {"subjects.$[elem].grade":new_course['grade']}},
+                                {"subjects.$[elem].grade":new_course["grade"]}},
                                 array_filters = [ 
                                     {
-                                    "elem.subject":new_course['subject'],
-                                     "elem.course":new_course['course']
+                                    "elem.subject":new_course["subject"],
+                                     "elem.course":new_course["course"]
                                      }
                                     ]
                             )
@@ -129,38 +129,36 @@ class User:
         #If we reach here,the course and subject are new so add
         #the new object
         database.mongo.db.users.update_one(self._filter,
-                {'$addToSet': {'subjects':new_course}})
+                {"$addToSet": {"subjects":new_course}})
     
         self._subjects.append(new_course)
 
-    def delete_course(self, subject_name, course_name):
+    def delete_course(self, subject,course):
         """Deletes a course from the list of courses studied by
         this user (if found)
 
         Parameters
         ----------
-        subject_name: str
-        Subject the course belongs too
-
-        course_name: str
+        subject:str
+        course:str
 
         Returns
         -------
         True if deleted
         False if not deleted
         """
-
-        if subject_name in self._subjects.keys():
-            courses = self._subjects[subject_name].keys()
-            if course_name in courses:
-                if len(courses) == 1:
-                    #last course in subject so delete the whole
-                    #subject
-                    del self._subjects[subject_name]
-                else:
-                    #just delete the course
-                    del self._subjects[subject_name][course_name]
-                database.mongo.db.users.update_one(self._filter, {"$set":{'subjects':
-                    self._subjects}})
-                return True
+        update = database.mongo.db.users.update_one(
+                    self._filter,
+                    {"$pull":
+                        {
+                            "subjects":
+                            {"subject":"spanish",
+                                "course":"listening"}    
+                            }
+                        }
+                    )
+        if update.modified_count > 0:
+           self._subjects = database.mongo.db.users.find_one(
+                   self._filter, {"subjects":1,"_id":0}) 
+           return True
         return False
