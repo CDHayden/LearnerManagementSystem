@@ -110,16 +110,25 @@ def get_subject_content(user_id, subject_name):
     Empty dictionary on error.
     On success: {'avg_grade':float, 'num_courses': int}
     """
-    total = 0
-    user = get_user_by_id(user_id)
-    if user and subject_name in user.subjects:
-        subject = user.subjects[subject_name]
-        for course in subject:
-            total = total + subject[course]['grade']
-        avg_grade = round(total / len(subject),2)
-        return {'num_courses':len(subject), 'avg_grade': avg_grade }
-    else:
-        return {}
+    pipeline = [
+                { "$match": {"_id":ObjectId(user_id)} },
+                {"$unwind": "$subjects"},
+                { "$match": {"subjects.subject": subject_name}},
+                {"$group":
+                    {
+                        "_id":"$subjects.subject",
+                        "courses": {
+                            "$addToSet": "$subjects.course"
+                                    },
+                        "avg_grade": { "$avg":"$subjects.grade"}
+                    }
+                } ]
+    results = list( database.mongo.db.users.aggregate(pipeline) )
+    subject_content = {}
+    if results:
+        subject_content.update({'avg_grade':results[0]['avg_grade'],
+            'num_courses':len(results[0]['courses'])})
+    return subject_content
 
 
 def allowed_file(filename):
