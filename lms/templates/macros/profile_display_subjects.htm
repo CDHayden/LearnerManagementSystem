@@ -2,7 +2,7 @@
 <ul>
 	{% for subject in subjects %}
 	<li> {{subject}} </li>
-		{% for course in subjects[subject] %}
+		{% for course in subject[subject] %}
 		<ul>
 			 <li>{{course}}</li>
 		</ul>
@@ -21,7 +21,7 @@
 			  data-bs-target="#flush-collapse{{loop.index}}"
 			  aria-expanded="false"
 			  aria-controls="flush-collapse{{loop.index}}">
-			   {{subject}} 
+			   {{subject._id}} 
 		  </button>
 		</h2>
 		<div id="flush-collapse{{loop.index}}" class="accordion-collapse
@@ -29,7 +29,7 @@
 			data-bs-parent="#courseMenu">
 					 <div class="accordion-body">
 						 <ul class="course-menu-list">
-							{% for course in subjects[subject] %}
+							{% for course in subject.courses %}
 								 <li>
 									 <a class="course-content-link">
 										 {{course}}
