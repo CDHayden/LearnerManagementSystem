@@ -99,7 +99,7 @@ class User:
         return self._subjects
 
 
-    def add_course(self, new_course):
+    def add_course(self,subject,course,grade):
         """ Adds a new course to the list of courses studied by this
         user
 
@@ -108,19 +108,22 @@ class User:
         new_course : dict
         {subject:str,course:str,grade:int}
         """
-        for subject in self._subjects:
+        for current_subject in self._subjects:
+            subject_name = current_subject.get("subject")
+            course_name = current_subject.get("course")
+
             #If the subject and course already exist, update the grade
-            if subject["subject"] == new_course["subject"]:
-                if subject["course"] == new_course["course"]:
-                    subject["grade"] = new_course["grade"]
+            if subject_name == subject:
+                if course_name == course:
+                    current_subject["grade"] = grade 
                     database.mongo.db.users.update_one(
-                            self._filter, 
+                            self._filter,
                             {"$set":
-                                {"subjects.$[elem].grade":new_course["grade"]}},
-                                array_filters = [ 
+                                {"subjects.$[elem].grade":grade}},
+                                array_filters = [
                                     {
-                                    "elem.subject":new_course["subject"],
-                                     "elem.course":new_course["course"]
+                                    "elem.subject":subject,
+                                    "elem.course":course
                                      }
                                     ]
                             )
@@ -128,6 +131,7 @@ class User:
         
         #If we reach here,the course and subject are new so add
         #the new object
+        new_course = {'subject':subject,'course':course,'grade':grade}
         database.mongo.db.users.update_one(self._filter,
                 {"$addToSet": {"subjects":new_course}})
     
@@ -152,14 +156,14 @@ class User:
                     {"$pull":
                         {
                             "subjects":
-                            {"subject":"spanish",
-                                "course":"listening"}    
+                            {"subject":subject,
+                                "course":course}
                             }
                         }
                     )
         if update.modified_count > 0:
            self._subjects = database.mongo.db.users.find_one(
-                   self._filter, {"subjects":1,"_id":0}) 
+                   self._filter, {"subjects":1,"_id":0})['subjects']
            return True
         return False
 
