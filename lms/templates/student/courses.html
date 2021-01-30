@@ -1,4 +1,4 @@
-{% import '/macros/generate_course_menu.htm' as gm %}
+{% import '/macros/profile_display_subjects.htm' as pds %}
 {% extends '/student/studentbase.html' %}
 
 {% block content %}
@@ -12,7 +12,7 @@
 
     <!-- COURSE MENU -->
 	<div class="col-4 col-md-3">
-		{{gm.generate_course_menu(menu_items)}}
+		{{pds.generate_course_menu(menu_items)}}
 	</div>
 	<!-- ./COURSE MENU-->
 
