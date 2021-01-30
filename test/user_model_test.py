@@ -25,17 +25,16 @@ class TestUserModel(unittest.TestCase):
     def setUp(self):
         database.mongo.db.users.insert_one( {
                     "_id":ObjectId(b'123456789abc'),
+                    "username":"chayden",
                     "forename":"Chris",
                     "surname":"Hayden",
                     "profile_about":"me",
                     "profile_image":"no",
-                    "subjects":{
-                        "spanish":{
-                            "speaking":{
-                                "grade":10
-                                }
-                            }
-                        }
+                    "subjects":[
+                        {"subject":"spanish", 
+                         "course":"speaking",
+                         "grade":10}
+                        ]
                     })
 
     def tearDown(self):
@@ -44,6 +43,7 @@ class TestUserModel(unittest.TestCase):
     def get_user_object(self):
         cursor = database.mongo.db.users.find_one({"forename":"Chris"})
         user = User(cursor['_id'],
+                        cursor['username'],
                         cursor['forename'],
                         cursor['surname'],
                         cursor['profile_about'],
@@ -78,49 +78,53 @@ class TestUserModel(unittest.TestCase):
 
     def test_can_get_subjects(self):
         user = self.get_user_object()
-        expected = {"spanish":{"speaking":{"grade":10}}}
+        expected = [{"subject":"spanish","course":"speaking","grade":10}]
         self.assertEqual(expected,user.subjects)
 
     def test_can_add_course_to_existing_subject(self):
         user = self.get_user_object()
-        new_course = {"spanish":{"listening":{"grade":25}}} 
-        expected = {"spanish":
-                        {
-                        "listening":{"grade":25},
-                        "speaking":{"grade":10},
-                        },
-                   }
+        subject = "spanish"
+        course = "listening"
+        grade = 25
+        expected = [
+                {"subject":"spanish","course":"speaking","grade":10},
+                {"subject":subject,"course":course,"grade":grade}
+                ]
 
-        user.add_course(new_course)
+        user.add_course(subject,course,grade)
         self.assertEqual(user.subjects,expected)
 
     def test_can_add_course_and_new_subject(self):
         user = self.get_user_object()
-        new_course = {"english":{"writing":{"grade":25}}} 
-        expected = {"english":
-                        {
-                            "writing": {"grade":25 }
-                        },
-                    "spanish":
-                        {
-                        "speaking":{"grade":10},
-                        },
-                   }
+        subject = 'english'
+        course = 'writing'
+        grade = 25
 
-        user.add_course(new_course)
+        expected = [
+                {"subject":"spanish", "course":"speaking", "grade":10},
+                {"subject":subject,"course":course,"grade":grade}
+                ]
+
+        user.add_course(subject, course, grade)
         self.assertEqual(user.subjects,expected)
 
+    @unittest.skip("mongomock does not support array_filters")
     def test_can_edit_existing_subject_course(self):
         user = self.get_user_object()
-        updated_course = {"spanish":{"speaking":{"grade":25}}} 
-        user.add_course(updated_course)
-        self.assertEqual(user.subjects,updated_course)
+        subject = 'spanish'
+        course = 'speaking'
+        grade = 100
+        user.add_course(subject,course,grade)
+        value = user.get_course_content(subject,course)
+        self.assertEqual(value.grade,grade)
 
 
     def test_can_delete_course_keep_subject(self):
         user = self.get_user_object()
-        new_course = {"spanish":{"listening":{"grade":25}}} 
-        user.add_course(new_course)
+        subject = "spanish"
+        course = "listening"
+        grade = 25
+        user.add_course(subject,course,grade)
         value = user.delete_course("spanish","speaking")
         self.assertTrue(value)
 
@@ -133,4 +137,4 @@ class TestUserModel(unittest.TestCase):
 
         with self.subTest():
             subject = user.subjects
-            self.assertEqual({ },subject)
+            self.assertEqual([ ],subject)
