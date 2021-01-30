@@ -40,7 +40,7 @@ def load_course_content():
     student = get_user_by_id(session['user'])
     subject = request.json['subject']
     course = request.json['course']
-    content = student.subjects[subject][course];
+    content = student.get_course_content(subject,course)
     return content
 
 @mod.route('/_load_subject_content', methods=['POST'])

@@ -198,3 +198,26 @@ class User:
             subject_content.update({'avg_grade':results[0]['avg_grade'],
                 'num_courses':len(results[0]['courses'])})
         return subject_content
+
+    def get_course_content(self,subject_name,course_name):
+        """
+        Returns an overview of a course for a user
+
+        Parameters
+        ----------
+        course_name : str
+        Name of the course we want to overview of
+
+        Return
+        ------
+        Empty dictionary on error.
+        On success: {'grade':int}
+        """
+        course_content = {}
+        for subject in self._subjects:
+            if subject['subject'] == subject_name \
+            and subject['course'] == course_name:
+                course_content.update({'grade':subject['grade']})
+                break
+
+        return course_content 
