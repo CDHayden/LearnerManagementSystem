@@ -1,0 +1,142 @@
+{% import '/macros/profile_display_subjects.htm' as pds %}
+{% extends '/staff/staffbase.html' %}
+
+{% block content %}
+<div class="row h-100">
+
+    <!-- PAGE HEADER -->
+    <div class="col-12" id="pageTitle">
+        <h1> {{user.forename}}'s classes </h1>
+    </div>
+    <!-- ./ PAGE HEADER -->
+
+    <!-- COURSE MENU -->
+	<div class="col-4 col-md-3">
+		{{pds.generate_course_menu(menu_items)}}
+	</div>
+	<!-- ./COURSE MENU-->
+	{{ students }}
+    <!-- MAIN CONTENT-->
+    <div class="col-8 col-md-9 vh-100" id="courseContent">
+		<h3 id="subjectName" class="text-capitalize"></h3>
+		<h4 id="numCourses"></h4>
+		<h4 id="avgGrade"></h4>
+		<h4 id="courseName" class="text-capitalize"></h4>
+		<h4 id="courseGrade"></h4>
+    </div>
+    <!-- ./MAIN CONTENT -->
+
+</div>
+{% endblock %}
+
+
+{% block late_optional_includes %}
+<script>
+
+	const clearContent = () => {
+		subject = document.getElementById('subjectName');
+		numCourses = document.getElementById('numCourses');
+		avgGrade= document.getElementById('avgGrade');
+		courseName = document.getElementById('courseName');
+		courseGrade = document.getElementById('courseGrade');
+
+		subject.innerText = '';
+		numCourses.innerText = '';
+		avgGrade.innerText = '';
+		courseName.innerText = '';
+		courseGrade.innerText = '';
+	}
+
+document.addEventListener('DOMContentLoaded', (event)=> {
+
+	/**
+	 * Called when a link with the "course-content-link" class is clicked.
+	 * Requests and loads information about the course via AJAX
+	 *
+	 * @param e - Event object passed in on click
+	 */
+	const loadCourseContent = (e) => {
+	  const course = e.srcElement.innerText;
+	  const subject = e.srcElement.parentElement.parentElement.parentElement.parentElement.previousElementSibling.innerText; 
+
+	  fetch('/student/_load_course_content', {
+		headers: { 'content-type': 'application/json; charset=utf-8' },
+		method: 'post',
+		body: JSON.stringify({
+		  subject: subject,
+		  course: course,
+		}),
+	  })
+		.then((response) => response.json())
+		.then((data) => {
+			clearContent();
+			
+			subject_el = document.getElementById('subjectName');
+			courseName_el = document.getElementById('courseName');
+			courseGrade_el = document.getElementById('courseGrade');
+
+			subject_el.innerText = subject;
+			courseName_el.innerText = course;
+			courseGrade_el.innerText = "Grade: " + data.grade;
+		});
+	  e.preventDefault();
+	};
+
+	/**
+	 * Called when a link with the "subject-content-link" class is clicked.
+	 * Requests and loads information about the course via AJAX
+	 *
+	 * @param e - Event object passed in on click
+	 * @param display - Element to display JSON data in
+	 */
+	const loadSubjectContent = (e) => {
+	  const subject = e.srcElement.innerText;
+
+	  if (e.srcElement.attributes['aria-expanded'].nodeValue == 'true') {
+		fetch('/student/_load_subject_content', {
+		  headers: { 'Content-Type': 'application/json; charset=utf-8' },
+		  method: 'POST',
+		  body: JSON.stringify({
+			subject: subject,
+		  }),
+		})
+		  .then((response) => response.json())
+		  .then((data) => {
+			clearContent();
+			subject_el = document.getElementById('subjectName');
+			numCourses_el = document.getElementById('numCourses');
+			avgGrade_el = document.getElementById('avgGrade');
+
+			subject_el.innerText = subject;
+			numCourses_el.innerText = "Number of courses: " + data.num_courses;
+			avgGrade_el.innerText = "Average grade: " + data.avg_grade;
+		  });
+	  }
+	  e.preventDefault();
+	};
+
+	selectActiveMenuItem('course-link')
+	/*
+		Register links with appropriate click handlers
+		Handler functions can be viewed in /static/js/script.js
+	*/
+
+	let course_links =
+	document.querySelectorAll('.course-content-link');
+
+	course_links.forEach(link => {
+		link.addEventListener('click',
+			function(e){ loadCourseContent(e);}, false);	
+	});
+
+	let subject_links = 
+		document.querySelectorAll('.subject-content-link');
+
+	subject_links.forEach(link => {
+		link.addEventListener('click',
+			function(e){ loadSubjectContent(e);}, false);	
+	});
+});
+
+</script>
+{% endblock %}
