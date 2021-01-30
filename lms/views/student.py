@@ -18,9 +18,10 @@ def student_index():
 @mod.route('/update_profile', methods=['POST'])
 def update_profile():
     student = get_user_by_id(session['user'])
+    print(student)
     data = {'profile_about':request.form.get('profile_about'),
             'profile_img': request.files.get('profile_image')}
-    message = update_user_profile(student.id,data)
+    message = update_user_profile(student._id,data)
     flash(message[0],message[1])
 
     return redirect(url_for('student.student_index'))

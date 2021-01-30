@@ -9,7 +9,7 @@ class User:
     """
 
     def __init__(self,
-                 id,
+                 _id,
                  username,
                  forename,
                  surname,
@@ -37,7 +37,7 @@ class User:
             enrolled on.
         """
 
-        self._id = ObjectId(id)
+        self._id = ObjectId(_id)
         self._username = username
         self._forename = forename
         self._surname = surname

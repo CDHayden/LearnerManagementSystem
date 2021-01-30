@@ -135,10 +135,10 @@ def update_user_profile(user_id,new_profile_data):
             encoded_img = base64.b64encode(new_image.read()).decode()
             filetype = new_image.filename.rsplit('.', 1)[1].lower()
             img_data = f'data:image/{filetype};base64,{encoded_img}'
-            database.mongo.db.users.update_one({'_id':user.id},
+            database.mongo.db.users.update_one({'_id':user._id},
                     {'$set':
                         {
-                    'profile_image': img_data
+                            'profile_image': img_data
                         }
                     })
 
