@@ -94,42 +94,6 @@ def generate_menu_items(user_id):
     menu_items = list(database.mongo.db.users.aggregate(pipeline))
     return menu_items
 
-def get_subject_content(user_id, subject_name):
-    """
-    Returns an overview of a subject for a user
-
-    Parameters
-    ----------
-    user_id : str
-    ID of the user to use
-    subject_name : str
-    Name of the subject we want to overview of
-
-    Return
-    ------
-    Empty dictionary on error.
-    On success: {'avg_grade':float, 'num_courses': int}
-    """
-    pipeline = [
-                { "$match": {"_id":ObjectId(user_id)} },
-                {"$unwind": "$subjects"},
-                { "$match": {"subjects.subject": subject_name}},
-                {"$group":
-                    {
-                        "_id":"$subjects.subject",
-                        "courses": {
-                            "$addToSet": "$subjects.course"
-                                    },
-                        "avg_grade": { "$avg":"$subjects.grade"}
-                    }
-                } ]
-    results = list( database.mongo.db.users.aggregate(pipeline) )
-    subject_content = {}
-    if results:
-        subject_content.update({'avg_grade':results[0]['avg_grade'],
-            'num_courses':len(results[0]['courses'])})
-    return subject_content
-
 
 def allowed_file(filename):
     """Checks if the filename provided is permitted 
