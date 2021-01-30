@@ -1,5 +1,6 @@
 import base64
 from bson.objectid import ObjectId
+from pprint import pprint
 from os import environ
 
 from ..models.user_model import User
@@ -24,6 +25,7 @@ def create_user_from_cursor(cursor):
     s = {}
     if cursor:
         s = User(cursor['_id'],
+                    cursor['username'],
                     cursor['forename'],
                     cursor['surname'],
                     cursor['profile_about'],
@@ -156,3 +158,14 @@ def update_user_profile(user_id,new_profile_data):
 
             flashed_message = ("Profile updated.", "alert-success") 
     return flashed_message
+
+def get_students_of_course(subject, course):
+    student = create_user_from_cursor(database.mongo.db.users.find_one(
+            {'$and': [
+                {'subjects.subject': subject},
+                {'subjects.course':course},
+                {'is_teacher':False}
+                ]}
+            ))
+
+    return 'students' 
