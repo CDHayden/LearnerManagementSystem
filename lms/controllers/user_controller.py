@@ -81,6 +81,19 @@ def get_user_by_id(user_id):
         return {}
 
 def generate_menu_items(user_id):
+    """
+    Generates items to display in a menu
+
+    Parameters
+    ----------
+    user_id : str
+    ObjectId str representation
+
+    Returns
+    -------
+    [{'subject':['course','course']}...]
+    """
+
     pipeline = [{"$match": {"_id":ObjectId(user_id)}}, 
                 {"$unwind": "$subjects"},
                 {"$group": 
