@@ -4,7 +4,8 @@ from flask import ( Blueprint, render_template, jsonify, request,
 
 from database import mongo
 from ..controllers.user_controller import (get_user_by_name,
-       update_user_profile, get_user_by_id, get_subject_content)
+       update_user_profile, get_user_by_id, get_subject_content,
+        generate_menu_items)
 
 mod = Blueprint("student", __name__)
 
@@ -29,9 +30,10 @@ def update_profile():
 @mod.route('/courses')
 def student_courses():
     student = get_user_by_id(session['user'])
+    menu_items = generate_menu_items(session['user'])
     return render_template('student/courses.html',
-                           student=get_user_by_id(session['user']),
-                           menu_items=student.subjects)
+                           student=student,
+                           menu_items=menu_items)
 
 
 @mod.route('/_load_course_content', methods=['POST'])
