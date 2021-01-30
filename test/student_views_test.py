@@ -23,28 +23,31 @@ class TestStudentViews(unittest.TestCase):
         pass
 
     def setUp(self):
-        database.mongo.db.users.insert_one( { "_id":ObjectId(b'testStudent1'),
+        database.mongo.db.users.insert_one( {
+                    "_id":ObjectId(b'123456789abc'),
+                    "username":"chayden",
                     "forename":"Chris",
                     "surname":"Hayden",
                     "profile_about":"me",
                     "profile_image":"no",
-                    "subjects":{
-                        "spanish":{
-                            "speaking":{
-                                "grade":10
-                                }
-                            }
-                        }
+                    "subjects":[
+                        {"subject":"spanish", 
+                         "course":"speaking",
+                         "grade":10}
+                        ]
                     })
 
     def tearDown(self):
         database.mongo.db.users.drop()
-    
+
     def test_student_index(self):
         response = self.app.get('/student/')
         self.assertEqual(response.status_code, 200)
 
     def test_student_update_profile(self):
+        with self.app.session_transaction() as sess:
+            sess['user'] = str(ObjectId(b'123456789abc'))
+
         update = {'profile_about':'new about'}
         response = self.app.post('/student/update_profile',
                 data=update) 
@@ -60,13 +63,13 @@ class TestStudentViews(unittest.TestCase):
         # Help with session mocking: 
         #https://stackoverflow.com/questions/36509662/python-mock-testing-to-mock-session
         with self.app.session_transaction() as sess:
-            sess['user'] = str(ObjectId(b'testStudent1'))
+            sess['user'] = str(ObjectId(b'123456789abc'))
         response = self.app.get('/student/courses')
         self.assertEqual(response.status_code,200)
 
     def test_student_load_course_content(self):
         with self.app.session_transaction() as sess:
-            sess['user'] = str(ObjectId(b'testStudent1'))
+            sess['user'] = str(ObjectId(b'123456789abc'))
 
         send =  {'subject':'spanish','course':'speaking'}
         response = self.app.post('/student/_load_course_content',
@@ -77,7 +80,7 @@ class TestStudentViews(unittest.TestCase):
 
     def test_student_load_subject_content(self):
         with self.app.session_transaction() as sess:
-            sess['user'] = str(ObjectId(b'testStudent1'))
+            sess['user'] = str(ObjectId(b'123456789abc'))
 
         send = { 'subject':'spanish'}
         response = self.app.post('/student/_load_subject_content', 

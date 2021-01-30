@@ -8,11 +8,10 @@ from lms import create_app
 import database
 from lms.models.user_model import User
 from lms.controllers.user_controller import (get_user_by_id, 
-create_user_from_cursor, get_subject_content, allowed_file,
-update_user_profile)
+create_user_from_cursor, allowed_file, update_user_profile)
 
 
-class TestStudentController(unittest.TestCase):
+class TestUserController(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.patcher = patch('flask_pymongo.MongoClient',
@@ -27,18 +26,17 @@ class TestStudentController(unittest.TestCase):
 
     def setUp(self):
         database.mongo.db.users.insert_one( {
-                    "_id":ObjectId(b'testStudent1'),
+                    "_id":ObjectId(b'123456789abc'),
+                    "username":"chayden",
                     "forename":"Chris",
                     "surname":"Hayden",
                     "profile_about":"me",
                     "profile_image":"no",
-                    "subjects":{
-                        "spanish":{
-                            "speaking":{
-                                "grade":10
-                                }
-                            }
-                        }
+                    "subjects":[
+                        {"subject":"spanish", 
+                         "course":"speaking",
+                         "grade":10}
+                        ]
                     })
 
     def tearDown(self):
@@ -56,23 +54,13 @@ class TestStudentController(unittest.TestCase):
 
 
     def test_can_get_user_by_id(self):
-        user = get_user_by_id(ObjectId(b'testStudent1'))
+        user = get_user_by_id(ObjectId(b'123456789abc'))
         self.assertIsInstance(user,User)
         
     def test_can_get_user_by_id_fails(self):
         test_id = ObjectId(b'testStudent2')
         user = get_user_by_id(test_id)
         self.assertEqual({},user)
-
-    def test_can_get_subject_content(self):
-        expected = {'avg_grade': 10.0, 'num_courses': 1}
-        value = get_subject_content(ObjectId(b'testStudent1'),"spanish")
-        self.assertEqual(expected,value)
-
-    def test_can_get_subject_content_fails(self):
-        expected = {}
-        value = get_subject_content(ObjectId(b'testStudent1'),"Wrong")
-        self.assertEqual(expected,value)
 
     def test_allowed_file(self):
         result = allowed_file("test.mp3")
@@ -84,8 +72,8 @@ class TestStudentController(unittest.TestCase):
 
     def test_update_user_profile_only_change_about(self):
         data = {'profile_about':'new about'}
-        value = update_user_profile(ObjectId(b'testStudent1'),data) 
-        user = get_user_by_id(ObjectId(b'testStudent1')) 
+        value = update_user_profile(ObjectId(b'123456789abc'),data) 
+        user = get_user_by_id(ObjectId(b'123456789abc')) 
 
         #check the profile was updated
         with self.subTest():
@@ -100,7 +88,6 @@ class TestStudentController(unittest.TestCase):
             self.assertEqual('no',user.profile_image)
 
     def test_update_user_profile_only_change_image(self):
-
         # Info on mocking files and file reads taken from:
         # https://docs.python.org/3/library/unittest.mock.html#mocking-the-builtin-open-used-as-a-context-manager
         def read():
@@ -111,9 +98,9 @@ class TestStudentController(unittest.TestCase):
         expected_img_return = 'data:image/png;base64,dGVzdA=='
 
         with patch('builtins.open', mock_open(read_data=b'test')):
-            value = update_user_profile(ObjectId(b'testStudent1'),data) 
+            value = update_user_profile(ObjectId(b'123456789abc'),data) 
 
-        user = get_user_by_id(ObjectId(b'testStudent1')) 
+        user = get_user_by_id(ObjectId(b'123456789abc')) 
 
         #check the profile was updated
         with self.subTest():

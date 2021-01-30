@@ -56,6 +56,16 @@ class TestUserModel(unittest.TestCase):
         self.assertIsInstance(self.get_user_object(), User)
             
 
+    def test_can_get_id(self):
+        user = self.get_user_object()
+        expected = ObjectId(b'123456789abc')
+        self.assertEqual(expected, user._id)
+
+    def test_can_get_username(self):
+        user = self.get_user_object()
+        expected = "chayden" 
+        self.assertEqual(expected,user.username)
+
     def test_can_get_forename(self):
         user = self.get_user_object()
         expected = "Chris"
