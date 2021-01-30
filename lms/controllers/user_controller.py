@@ -82,8 +82,15 @@ def get_user_by_id(user_id):
 
 def generate_menu_items(user_id):
     pipeline = [ {"$unwind": "$subjects"},
-            {"$group": {"_id":"$subjects.subject", "courses":
-                {"$addToSet": "$subjects.course"}}} ]
+                {"$group": 
+                    {
+                        "_id":"$subjects.subject",
+                        "courses": {
+                            "$addToSet": "$subjects.course"
+                                    }
+                    }
+                } ]
+
     menu_items = list(database.mongo.db.users.aggregate(pipeline))
     return menu_items
 
