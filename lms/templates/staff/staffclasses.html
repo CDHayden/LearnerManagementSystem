@@ -11,18 +11,112 @@
     <!-- ./ PAGE HEADER -->
 
     <!-- COURSE MENU -->
-	<div class="col-4 col-md-3">
+	<div id="menu_wrapper" class="col-4 col-md-3">
 		{{pds.generate_course_menu(menu_items)}}
 	</div>
 	<!-- ./COURSE MENU-->
-	{{ students }}
+
+
+	
+    <!-- EDIT MODAL-->
+	<div class="modal" id="editModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.edit_student_in_class')}}"
+			  method="POST">
+		  <div class="modal-header">
+			<h5 id="editModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+				  <label for="editGrade" class="form-label"> Grade: </label>
+				  <input type="text" class="form-control"
+				  id="editGrade" name="grade" required>
+				  <input type="hidden" class="form-control" id="editUsername" name="username">
+				  <input type="hidden" class="form-control" id="editSubject" name="subject">
+				  <input type="hidden" class="form-control" id="editCourse" name="course">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-primary">Save changes</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./EDIT MODAL-->
+
+    <!-- DELETE MODAL-->
+	<div class="modal" id="deleteModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.delete_student_in_class')}}"
+			  method="POST">
+		  <div class="modal-header">
+			<h5 id="deleteModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <p id="deleteConfirm"></p>
+				  <input type="hidden" class="form-control"
+				  id="deleteUsername" name="username">
+				  <input type="hidden" class="form-control"
+				  id="deleteSubject" name="subject">
+				  <input type="hidden" class="form-control"
+				  id="deleteCourse" name="course">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+			<button type="submit" class="btn btn-primary">Yes</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./DELETE MODAL-->
+
+    <!-- ADD MODAL-->
+	<div class="modal" id="addModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.add_student_in_class')}}"
+			  method="POST">
+		  <div class="modal-header">
+			<h5 id="addModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <p> You can select multiple students at a time. </p>
+			  <select class="form-select" name="students"
+				  id="addStudents" multiple>
+			  </select>
+			  <input type="hidden" class="form-control"
+			  id="addSubject" name="subject">
+			  <input type="hidden" class="form-control"
+			  id="addCourse" name="course">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary"
+				data-bs-dismiss="modal">Cancel</button>
+			<button type="submit" class="btn btn-primary">Add</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./ADD MODAL-->
+
     <!-- MAIN CONTENT-->
     <div class="col-8 col-md-9 vh-100" id="courseContent">
-		<h3 id="subjectName" class="text-capitalize"></h3>
-		<h4 id="numCourses"></h4>
-		<h4 id="avgGrade"></h4>
-		<h4 id="courseName" class="text-capitalize"></h4>
-		<h4 id="courseGrade"></h4>
+		<h3 id="courseTitle" class="text-center text-capitalize"> </h3>
+		<div class="table-responsive">
+			<table class="table table-sm table-striped table-hover">
+				<thead id="table-head">
+				</thead>
+				<tbody id="table-body">
+				</tbody>
+				</table>
+		</div>
     </div>
     <!-- ./MAIN CONTENT -->
 
@@ -31,24 +125,13 @@
 
 
 {% block late_optional_includes %}
+
+
+
 <script>
 
-	const clearContent = () => {
-		subject = document.getElementById('subjectName');
-		numCourses = document.getElementById('numCourses');
-		avgGrade= document.getElementById('avgGrade');
-		courseName = document.getElementById('courseName');
-		courseGrade = document.getElementById('courseGrade');
-
-		subject.innerText = '';
-		numCourses.innerText = '';
-		avgGrade.innerText = '';
-		courseName.innerText = '';
-		courseGrade.innerText = '';
-	}
-
 document.addEventListener('DOMContentLoaded', (event)=> {
-
+	
 	/**
 	 * Called when a link with the "course-content-link" class is clicked.
 	 * Requests and loads information about the course via AJAX
@@ -58,8 +141,8 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 	const loadCourseContent = (e) => {
 	  const course = e.srcElement.innerText;
 	  const subject = e.srcElement.parentElement.parentElement.parentElement.parentElement.previousElementSibling.innerText; 
-
-	  fetch('/student/_load_course_content', {
+	  document.getElementById('courseTitle').innerText = subject + " - " + course;
+	  fetch('/staff/_load_class', {
 		headers: { 'content-type': 'application/json; charset=utf-8' },
 		method: 'post',
 		body: JSON.stringify({
@@ -69,53 +152,18 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 	  })
 		.then((response) => response.json())
 		.then((data) => {
-			clearContent();
-			
-			subject_el = document.getElementById('subjectName');
-			courseName_el = document.getElementById('courseName');
-			courseGrade_el = document.getElementById('courseGrade');
-
-			subject_el.innerText = subject;
-			courseName_el.innerText = course;
-			courseGrade_el.innerText = "Grade: " + data.grade;
+			if(data.length > 0){
+				//Clear table of old data
+				destroyTable();
+				//Load in new data
+				generateTable(subject,course,data);
+			}
 		});
 	  e.preventDefault();
 	};
 
-	/**
-	 * Called when a link with the "subject-content-link" class is clicked.
-	 * Requests and loads information about the course via AJAX
-	 *
-	 * @param e - Event object passed in on click
-	 * @param display - Element to display JSON data in
-	 */
-	const loadSubjectContent = (e) => {
-	  const subject = e.srcElement.innerText;
 
-	  if (e.srcElement.attributes['aria-expanded'].nodeValue == 'true') {
-		fetch('/student/_load_subject_content', {
-		  headers: { 'Content-Type': 'application/json; charset=utf-8' },
-		  method: 'POST',
-		  body: JSON.stringify({
-			subject: subject,
-		  }),
-		})
-		  .then((response) => response.json())
-		  .then((data) => {
-			clearContent();
-			subject_el = document.getElementById('subjectName');
-			numCourses_el = document.getElementById('numCourses');
-			avgGrade_el = document.getElementById('avgGrade');
-
-			subject_el.innerText = subject;
-			numCourses_el.innerText = "Number of courses: " + data.num_courses;
-			avgGrade_el.innerText = "Average grade: " + data.avg_grade;
-		  });
-	  }
-	  e.preventDefault();
-	};
-
-	selectActiveMenuItem('course-link')
+	selectActiveMenuItem('classLink')
 	/*
 		Register links with appropriate click handlers
 		Handler functions can be viewed in /static/js/script.js
@@ -128,15 +176,8 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 		link.addEventListener('click',
 			function(e){ loadCourseContent(e);}, false);	
 	});
-
-	let subject_links = 
-		document.querySelectorAll('.subject-content-link');
-
-	subject_links.forEach(link => {
-		link.addEventListener('click',
-			function(e){ loadSubjectContent(e);}, false);	
-	});
 });
 
 </script>
+<script src='{{url_for('static',filename='js/staffclasses.js')}}'></script>
 {% endblock %}
