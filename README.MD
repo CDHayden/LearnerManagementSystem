@@ -109,6 +109,8 @@ As I wrote each unit of functionality I would manually test them with dummy data
 
 This project was deployed to heroku via a simple Procfile. I also created the following config vars in the heroku app: 
 
+You can view the deployed site here: [lms.herokuapp.com](http://lms5.herokuapp.com/)
+
 ```
 ALLOWED_EXTENSIONS = {'jpg','jpeg','png','gif'}
 HOST = 0.0.0.0
