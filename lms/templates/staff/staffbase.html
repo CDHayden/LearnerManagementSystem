@@ -12,11 +12,10 @@ L.M.S
 {% block menu %}
 <!-- Nav bar code taken from Boostrap documentation. https://getbootstrap.com/docs/4.4/components/navbar/ -->
 <nav class="navbar navbar-expand-md navbar-custom">
-	<a class="navbar-brand"
-	   href="{{url_for('home.index',_external=True)}}">LMS</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#homeMenuContent"
+	<a class="navbar-brand" href="{{url_for('home.index',_external=True)}}">LMS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#homeMenuContent"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+		<i class="fas fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="homeMenuContent">
         <ol class="navbar-nav">
