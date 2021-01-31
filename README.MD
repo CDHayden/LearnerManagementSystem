@@ -28,9 +28,8 @@ As a student I should be able to:
 
 ### Wireframes
 
-[Click here to view Desktop wireframes](./wireframes/desktop/)
-[Click here to view Tablet wireframes](./wireframes/tablet/)
-[Click here to view Mobile wireframes](./wireframes/mobile/)
+[Click here to view wireframes](./wireframes/)
+Where the name states "all-devices" this is because the layout does not change between devices save for some padding / margin changes.
 
 ## Features
 
