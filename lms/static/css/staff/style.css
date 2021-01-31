@@ -21,7 +21,7 @@ body {
 
 
 /***********************************************************
- *                       STUDENTBASE                       *
+ *                       STAFFBASE                       *
  ***********************************************************/
 
  /*
@@ -72,7 +72,7 @@ body {
 }
 
 /***********************************************************
- *                       STUDENT/                          *
+ *                       STAFF/                          *
  ***********************************************************/
 /*
  *****************  FLASHED MESSAGES
@@ -351,7 +351,7 @@ input[type="file"]{
 }
 
 /***********************************************************
- *                 STUDENT/CLASSES                         *
+ *                 STAFF/CLASSES                         *
  ***********************************************************/
 
  #pageTitle{
@@ -367,12 +367,16 @@ input[type="file"]{
 }
 
 /***** CLASS CONTENT *****/
+#menu_wrapper{
+	background-color:var(--light-blue-color);
+}
+
 .accordion{
 	padding-left: 0;	
 }
 
-.accordion-button:not(.collapsed) {
-    color: #000000;
+.accordion-button:not(.collapsed), .accordion-button.collapsed {
+    color: var(--main-white-colour);
     background-color: transparent;
 }
 
@@ -383,18 +387,16 @@ input[type="file"]{
 
 .course-menu-list li a{
 	cursor: pointer;
-	color: var(--dark-blue-colour);
+    color: var(--main-white-colour);
 	font-weight: bold;
 	text-decoration:none;
 }
 
-#courseContent{
-	padding-top: 2rem;
-    text-align: center;
-    background-color: var(--main-white-colour);
+/* Font awesome Icons used for actions */
+.fas{
+	cursor: pointer;
 }
 
-#subjectName{
-	text-decoration: underline;
+.fas:hover{
+	color:var(--light-orange-highlight);
 }
-
