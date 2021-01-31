@@ -182,12 +182,43 @@ def update_user_profile(user_id,new_profile_data):
     return flashed_message
 
 def get_students_of_course(subject, course):
-    student = create_user_from_cursor(database.mongo.db.users.find_one(
+    """
+    Get all students who study subject -course
+
+    Parameters
+    ----------
+    subject: str
+    course: str
+    """
+
+    students = list(map(create_student_from_cursor,database.mongo.db.users.find(
             {'$and': [
                 {'subjects.subject': subject},
                 {'subjects.course':course},
                 {'is_teacher':False}
                 ]}
-            ))
+            )))
 
-    return 'students' 
+    return students 
+
+def get_students_not_of_course(subject, course):
+    """
+    Get all students who don't study subject - course
+
+    Parameters
+    ----------
+    subject: str
+    course: str
+
+    Returns a list of usernames of studnets not in the course
+    [{'username':username},...]
+    """
+    query = database.mongo.db.users.find(
+             {"$and": [
+                 {"subjects":{"$not": { "$elemMatch": {'subject': subject,
+                     'course':course}}}},{'is_teacher':False}]},{"_id":0,"username":1}
+             )
+
+    students = list(query)
+
+    return students
