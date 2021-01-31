@@ -81,6 +81,27 @@ def get_user_by_id(user_id):
     except:
         return {}
 
+def get_user_by_username(username):
+    """
+    Returns User object for user of username
+
+    Parameters
+    ----------
+    username : str
+    Unique username of user
+
+    Returns
+    -------
+    Empty dict on error
+    Otherwise a user object (see /models/user_model.py)
+    """
+
+    try:
+        cursor = database.mongo.db.users.find_one({'username':username})
+        return create_user_from_cursor(cursor)
+    except:
+        return {}
+
 def generate_menu_items(user_id):
     """
     Generates items to display in a menu
