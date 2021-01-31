@@ -135,5 +135,15 @@ SECRET_KEY=
 
 You need to supply your own mongo_uri and secrey_key. You simply run the application by typing `flask run`
 
+If you want to populate your database with dummy data simply visit '/populate_db' and you will create the following accounts:
+
+```
+student1 : test
+student2 : test
+student3 : test
+teacher1 : test
+teacher2 : test
+```
+
 ## Credits
 My mentor Reuben Ferrante for his patience and time helping me with this project. I am very grateful to him.
