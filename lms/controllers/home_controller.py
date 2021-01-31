@@ -1,4 +1,4 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from bson.objectid import ObjectId
 import database
 
@@ -37,22 +37,3 @@ def log_user_in(username, password):
         return False
 
     return get_returnable_user(user)
-
-def register_user(username, password, confirmPassword):
-    """ Try and create a user in the database with provided credentials """
-    if not username or not password or not confirmPassword:
-        return no_details_error
-
-    if get_user_from_username(username) is not None:
-        return user_already_exists_error
-
-    if password != confirmPassword:
-        return password_not_match_arrow 
-
-    hashed_password = generate_password_hash(password)
-
-    try:
-        mongo.db.users.insert_one({'username':username.lower(),'password':hashed_password})
-    except:
-        return db_error
-    return successful_registration_message

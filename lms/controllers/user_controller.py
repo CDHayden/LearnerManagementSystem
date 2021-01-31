@@ -1,6 +1,6 @@
 import base64
 from bson.objectid import ObjectId
-from pprint import pprint
+from werkzeug.security import generate_password_hash
 from os import environ
 
 from ..models.user_model import User
@@ -156,14 +156,14 @@ def update_user_profile(user_id,new_profile_data):
     { 'profile_about':str, profile_img: }
     """
 
-    user = get_user_by_id(user_id) 
+    user = get_user_by_id(user_id)
     flashed_message = ("There was a problem updating your profile","alert-danger")
 
     if 'profile_about' in new_profile_data:
         if user.profile_about != new_profile_data['profile_about']:
             user.profile_about = new_profile_data['profile_about']
             flashed_message = ("Profile updated.","alert-success")
-    
+
     if 'profile_img' in new_profile_data:
         new_image = new_profile_data['profile_img']
 
@@ -178,7 +178,7 @@ def update_user_profile(user_id,new_profile_data):
                         }
                     })
 
-            flashed_message = ("Profile updated.", "alert-success") 
+            flashed_message = ("Profile updated.", "alert-success")
     return flashed_message
 
 def get_students_of_course(subject, course):
@@ -222,3 +222,74 @@ def get_students_not_of_course(subject, course):
     students = list(query)
 
     return students
+
+def get_all_students():
+    query = database.mongo.db.users.find({'is_teacher':False})
+    students = list(map(create_student_from_cursor,query))
+    return students
+
+def add_new_user(user_info):
+    """ Try and create a user in the database with provided credentials """
+
+    if not user_info['username'] \
+    or not user_info['forename'] \
+    or not user_info['surname'] \
+    or not user_info['password'] \
+    or not user_info['confirmPassword']:
+        return {'message':'Missing required information',
+        'style':'alert-danger'}
+
+    user_does_exist = get_user_by_username(user_info['username'])
+    if user_does_exist:
+        return {'message':'Username already in use',
+        'style':'alert-danger'}
+
+    if user_info['password'] != user_info['confirmPassword']:
+        return {'message':'Passwords do not match',
+        'style':'alert-danger'}
+
+    hashed_password = generate_password_hash(user_info['password'])
+
+    try:
+        database.mongo.db.users.insert_one({
+            '_id':ObjectId(),
+            'username':user_info['username'].lower(),
+            'password':hashed_password,
+            'is_teacher':False,
+            'forename':user_info['forename'].lower(),
+            'surname':user_info['surname'].lower(),
+            'profile_about': 'I need to update my profile',
+            'profile_image': 'none',
+            'subjects':[]
+            })
+    except:
+        return{'message': 'Database error.','style':'alert-danger'}
+    return{'message': f'{user_info["username"]} added.','style':'alert-success'}
+
+def delete_user_from_username(username):
+    if username:
+        try:
+            database.mongo.db.users.delete_one({'username':username})
+        except:
+            return{'message': 'Database error.','style':'alert-danger'}
+        return{'message': f'{username} deleted.','style':'alert-success'}
+    return{'message': f'Could not find user {username}.','style':'alert-danger'}
+
+def edit_user_from_username(username,data):
+    new_values = {key : value for key, value in data.items() if value not in (None,'')}
+    if username:
+        if new_values['password'] and new_values['confirmPassword']:
+            if new_values['password'] == new_values['confirmPassword']:
+                new_values['password'] = generate_password_hash(new_values['confirmPassword'])
+                del new_values['confirmPassword']
+
+            else:
+                return{'message': 'Passwords do not match.','style':'alert-danger'}
+
+        try:
+            database.mongo.db.users.update_one({'username':username},
+                    {"$set": new_values})
+        except:
+            return{'message': 'Database error.','style':'alert-danger'}
+        return{'message': f'{username} Updated.','style':'alert-success'}
+    return{'message': f'Could not find user {username}.','style':'alert-danger'}

@@ -4,7 +4,8 @@ from flask import ( Blueprint, render_template, jsonify, request,
 import database
 from ..controllers.user_controller import (get_user_by_id,
 update_user_profile, get_students_of_course, generate_menu_items, 
-get_user_by_username, get_students_not_of_course)
+get_user_by_username, get_students_not_of_course, get_all_students, 
+add_new_user, delete_user_from_username, edit_user_from_username)
 
 mod = Blueprint("staff", __name__)
 
@@ -79,7 +80,10 @@ def add_student_in_class():
 
     if students and subject and course:
         for student in students:
-            get_user_by_username(student).add_course(subject,course)
+            user = get_user_by_username(student)
+            print(user,student)
+            if user:
+                user.add_course(subject,course)
         flash(f"Successfully added {students} to {subject}-{course}","alert-success")
         return redirect(url_for('staff.staff_classes'))
 
@@ -115,3 +119,33 @@ def delete_class():
     user = get_user_by_id(session['user'])
     user.delete_course(subject,course)
     return redirect(url_for('staff.staff_classes'))
+
+@mod.route('_get_all_students',methods=['POST'])
+def all_students():
+    return jsonify(get_all_students())
+
+@mod.route('_add_student',methods=['POST'])
+def add_student():
+    username = request.form['username'];
+    forename = request.form['forename'];
+    surname = request.form['surname'];
+    password = request.form['password'];
+    confirmPassword = request.form['confirmPassword'];
+
+    msg = add_new_user({'username':username,'forename':forename,'surname':surname,'password':password,'confirmPassword':confirmPassword})
+    flash(msg['message'],msg['style'])
+    return redirect(url_for('staff.manage_students'))
+
+@mod.route('_delete_student_record',methods=['POST'])
+def delete_student_record():
+    msg = delete_user_from_username(request.form['user'])
+    flash(msg['message'],msg['style'])
+    return redirect(url_for('staff.manage_students'))
+
+@mod.route('_edit_student_record',methods=['POST'])
+def edit_student_record():
+    values = dict( request.form )
+    del values['oldUsername']
+    msg = edit_user_from_username(request.form['oldUsername'],values)
+    flash(msg['message'],msg['style'])
+    return redirect(url_for('staff.manage_students'))

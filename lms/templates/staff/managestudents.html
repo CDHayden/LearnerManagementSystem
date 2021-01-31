@@ -1,6 +1,187 @@
+{% import '/macros/profile_display_subjects.htm' as pds %}
 {% extends '/staff/staffbase.html' %}
 
 {% block content %}
-<p> manage students </p>
- {{students}}
+<div class="row h-100">
+
+    <!-- PAGE HEADER -->
+    <div class="col-12" id="pageTitle">
+        <h1> Students  </h1>
+    </div>
+    <!-- ./ PAGE HEADER -->
+
+    <!-- EDIT MODAL-->
+	<div class="modal" id="editModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.edit_student_record')}}" method="POST">
+		  <div class="modal-header">
+			<h5 id="editModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <input type="hidden" id="oldUsername" name="oldUsername" class="form-control">
+			  <span> Username:
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="editUsername" name="username">
+					  <label id="lblUsername" for="editUsername"></label>
+				  </div>
+			  </span>
+
+			  <span> Forename:
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="editForename" name="forename">
+					  <label id="lblForename" for="editForename"></label>
+				  </div>
+			  </span>
+
+			  <span> Surname:
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="editSurname" name="surname">
+					  <label id="lblSurname" for="editSurname"></label>
+				  </div>
+			  </span>
+
+			  <div class="form-floating">
+				  <input type="password" class="form-control"
+				  id="editPassword" name="password"
+					  placeholder="password">
+				  <label for="editPassword">Password:</label>
+			  </div>
+
+			  <div class="form-floating">
+				  <input type="password" class="form-control"
+				  id="editPasswordConfirm" name="confirmPassword">
+				  <label for="confirmEditPassword">Confirm Password:</label>
+			  </div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-primary">Save changes</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./EDIT MODAL-->
+
+    <!-- DELETE MODAL-->
+	<div class="modal" id="deleteModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.delete_student_record')}}" method="POST">
+		  <div class="modal-header">
+			<h5 id="deleteModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <p id="deleteConfirm"></p>
+				  <input type="hidden" class="form-control"
+				  id="deleteUsername" name="user">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+			<button type="submit" class="btn btn-primary">Yes</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./DELETE MODAL-->
+
+    <!-- ADD MODAL-->
+	<div class="modal" id="addModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.add_student')}}" method="POST">
+		  <div class="modal-header">
+			<h5 id="addModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+			  <div class="modal-body">
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="addUsername" name="username"
+						  placeholder="username" required>
+					  <label for="addUsername">Username:</label>
+				  </div>
+
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="addForename" name="forename"
+						  placeholder="forename" required>
+					  <label for="addForename">Forename:</label>
+				  </div>
+
+				  <div class="form-floating">
+					  <input type="text" class="form-control"
+					  id="addSurname"
+						  name="surname" placeholder="surname" required>
+					  <label for="addSurname">Surname:</label>
+				  </div>
+
+				  <div class="form-floating">
+					  <input type="password" class="form-control"
+					  id="addPassword" name="password"
+						  placeholder="password" required>
+					  <label for="addPassword">Password:</label>
+				  </div>
+
+				  <div class="form-floating">
+					  <input type="password" class="form-control"
+					  id="confirmAddPassword" name="confirmPassword"
+					  required placeholder="confirm password">
+					  <label for="confirmAddPassword">Confirm Password:</label>
+				  </div>
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary"
+				data-bs-dismiss="modal">Cancel</button>
+			<button type="submit" class="btn btn-primary">Add</button>
+			</form>
+			</div>
+		</div>
+	  </div>
+	</div>
+    <!-- ./ADD MODAL-->
+
+    <!-- MAIN CONTENT-->
+    <div class="col-8 col-md-9 vh-100 w-100 mx-auto" id="courseContent">
+		<div class="table-responsive w-75 mx-auto">
+			<table class="table table-sm table-striped table-hover">
+				<thead id="table-head">
+				</thead>
+				<tbody id="table-body">
+				</tbody>
+				</table>
+		</div>
+    </div>
+    <!-- ./MAIN CONTENT -->
+
+</div>
+{% endblock %}
+
+
+{% block late_optional_includes %}
+<script>
+document.addEventListener('DOMContentLoaded', (event)=> {
+
+  fetch('/staff/_get_all_students', {
+    headers: { 'content-type': 'application/json; charset=utf-8' },
+    method: 'post',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		destroyTable();
+		generateTable(data);
+		 });
+});
+	selectActiveMenuItem('studentLink')
+
+
+</script>
+<script src='{{url_for('static',filename='js/staffstudents.js')}}'></script>
 {% endblock %}
