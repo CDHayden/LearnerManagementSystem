@@ -7,31 +7,42 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-12">
-		<a id="go_back" href="#" onclick="window.history.back()"> 
+	<div class="col-12" id="go_back" >
+		<a href="#" onclick="window.history.back()"> 
 			<i class="fas fa-angle-double-left"></i> Go back </a>
 	</div>
 
-	<div id="profile_username" class="col-12 col-md-10 offset-md-1
-	col-lg-8 offset-lg-2">
-		<h1> {{profile.username}} </h1>
-	</div>
-
-	<div id="profile_container" class="col-12 col-md-10 offset-md-1
+	<div id="profile-container" class="col-12 col-md-10 offset-md-1
 		col-lg-8 offset-lg-2">
-		<div class="image-wrapper">
-			<img src="{{profile.profile_image}}" alt="Profile Picture"
-				  class="profile-image">
-		</div>
 
-		<h3 id="profile_name"> {{profile.forename}} {{profile.surname}}</h3>
-		
-		<div id="profile_about">
-			<p>{{profile.profile_about}} </p>
-		</div>
+    <!-- PROFILE IMAGE -->
+    <div class="col-12">
+        <div class="image-wrapper">
+            <img src="{{profile.profile_image}}" alt="profile picture" class="profile-image">
+        </div>
+    </div>
+    <!-- ./PROFILE IMAGE-->
 
-		<h4> Studying: </h4>
+    <!-- PROFILE IMAGE BACKGROUND-->
+    <div class="col-12" id="profile-image-bg">
+    </div>
+    <!-- PROFILE IMAGE BACKGROUND-->
+
+    <!-- PROFILE NAME-->
+    <div class="col-12" id="profile-name">
+		<h1> {{profile.username}} </h1>
+    </div>
+    <!-- ./PROFILE NAME-->
+
+    <!-- PROFILE ABOUT-->
+    <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2" id="profile-about">
+        <h3 id="about-title">{{profile.forename}} {{profile.surname}} </h3>
+        <p> {{profile.profile_about}} </p>
+		<h4 id="studying-title"> Studying </h4>
 		{{pds.profile_display_subjects(profile.subjects)}}
+    </div>
+    <!-- ./PROFILE ABOUT-->
+		
 	</div>
 </div>
 {% endblock %}

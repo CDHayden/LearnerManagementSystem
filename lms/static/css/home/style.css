@@ -1,74 +1,199 @@
- #go_back{
-	 margin-left: 1rem;
-	 margin-top: 2rem;
-	 display: inline-block;
- }
-
-/* ***************** PROFILE
+:root {
+/*
+ **** COLOUR VARIABLES
  */
-#profile_container{
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
-	margin-top: 6rem;
 }
 
-.profile-image{
-	width: 8.929rem;	
+
+body {
+    height: 100%;
+    background-color: #b8b8b8;
+    color: var(--main-purple-colour);
 }
+
+ /*
+  **** MENU
+  */
+.navbar-brand {
+    font-family: 'Hind Vadodara', sans-serif;
+	margin-left: 1rem;
+}
+
+/*
+ **** GO BACK LINK
+ */
+
+#go_back {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+}
+
+#go_back>a {
+    display: inline-block;
+    color: black;
+    letter-spacing: 0.1rem;
+    font-weight: 480;
+    text-decoration: none;
+
+    transition: letter-spacing .5s;
+}
+
+#go_back>a>i {
+    color: black;
+}
+
+#go_back>a::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: all .3s;
+}
+
+#go_back>a:hover {
+    letter-spacing: initial;
+    font-weight: 600;
+}
+
+#go_back>a:hover::before {
+    width: 100%;
+}
+
+
+/*
+ ****   PROFILE IMAGE
+ */
 
  .image-wrapper{
      height: 8.929rem;
      width: 8.929rem;
      border-radius: 50%;
-	 margin-top: -4.4rem;
-	 margin-bottom: 2rem;
      margin-left: auto;
      margin-right: auto;
-	  box-shadow: 2px 8px 12px 2px rgba(0,0,0,0.41) inset;
-	-webkit-box-shadow: 2px 8px 12px 2px rgba(0,0,0,0.41) inset;
-	-moz-box-shadow: 2px 8px 12px 2px rgba(0,0,0,0.41) inset;   
-	overflow: hidden;
+     box-shadow: 0 0.1rem 1rem black,
+     0 -0.5rem 3rem lightgrey;
+     overflow: hidden;
  }
 
-#profile_username{
-	text-align: center;
+.profile-image{
+    width: 8.929rem; /* 125px */
+
 }
 
-#profile_name{
-	text-transform: capitalize;	
+#profile-image-bg {
+    margin-top: -5rem;
+    background-color: slategrey;
+    background: linear-gradient(360deg, #383838,
+                slategrey,
+				lightgrey);
+    min-height: 1.5rem;
+    z-index: -1;
+    box-shadow: 0 -0.1429rem 0.3rem black;
 }
-#go_back{
-	font-size: 0.8rem;
-	text-align:left;
+
+
+/*
+ **** PROFILE NAME
+ */
+
+#profile-name {
+    text-align: center;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: #383838; 
+    z-index: -1;
+    color: white;
+}
+
+#profile-name>h1 {
+    font-weight: 650;
+}
+
+/*
+ **** PROFILE ABOUT
+ */
+
+#profile-about {
+    color:black;
+    background-color: white;
+    padding-top: 3rem;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+
+#profile-about > p {
+    padding-left: 2rem;
+    font-size: 1.2rem;
+}
+
+#about-title {
+    align-self: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1429rem;
+}
+
+
+/*
+ **** PROFILE SUBJECTS
+ */
+#studying-title{
+    align-self: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+
+ul{
+	text-align: center;
 }
 
 /*
  **** MEDIA QUERIES
  */
-@media(min-width: 768px){
-	#go_back{
-		margin-left: 4rem;
-	}		
 
-.image-wrapper{
-	height: 10.71rem;
-	width: 10.71rem;
-}
-.profile-image {
-	width: 10.71rem; /* 150px */
+@media(min-width: 768px) {
+    .image-wrapper{
+        height: 10.71rem;
+        width: 10.71rem;
+    }
+    .profile-image {
+        width: 10.71rem; /* 150px */
+    }
+
+    #profile-about {
+        margin-top: 3rem;
+        border: 0.1429rem solid black; 
+        padding: 3rem 2rem;
+        box-shadow: 0.1429rem 0.4286rem 1.357rem black;
+        border-radius: 1rem;
+    }
+
+    #profile-name{
+        padding-top: 0;
+    }
+
+    #oldImage{
+        align-items: flex-end;
+    }
+    #newImage{
+        align-items: flex-start;
+    }
 }
 
-@media(min-width: 992px){
-	#go_back{
-		margin-left: 10rem;
-	}		
-	
-	.image-wrapper{
-		height: 12.20rem;
-		width: 12.29rem;
-	}
-	.profile-image {
-		width: 14.29rem; /* 200px */
-	}
+@media(min-width: 992px) {
+    .image-wrapper{
+        height: 14.20rem;
+        width: 14.29rem;
+    }
+    .profile-image {
+        width: 14.29rem; /* 200px */
+    }
 }
 

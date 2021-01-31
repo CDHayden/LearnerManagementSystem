@@ -1,12 +1,7 @@
 {% macro profile_display_subjects(subjects) -%}
-<ul>
+<ul class="list-group list-group-flush">
 	{% for subject in subjects %}
-	<li> {{subject}} </li>
-		{% for course in subject[subject] %}
-		<ul>
-			 <li>{{course}}</li>
-		</ul>
-		{% endfor %}
+	<li class="list-group-item"> {{subject['subject']}} - {{subject['course']}} </li>
 	{% endfor %}
 </ul>
 {%- endmacro %}

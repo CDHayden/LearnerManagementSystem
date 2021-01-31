@@ -7,30 +7,32 @@ Learner Management System
 {% block content %}
 
 <div class="row">
-    <div class="col col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card" id="card-signin">
+    <div class="col col-sm-9 col-md-7 col-lg-5 mx-auto mt-5">
+        <div class="card my-auto" id="card-signin">
             <div class="card-header text-center">
                 Sign in
             </div>
             <div class="card-body mx-auto">
                 <form action='/login' method='POST' id="form-signin">
                     <!-- USERNAME -->
-                    <div class="form-group">
-                        <label for="username" class="lbl-signin">Username:</label>
-                        <input type="text" name="username" id="username" placeholder="username" required autofocus>
-                    </div>
+						<div class="form-floating">
+							<input type="text" class="form-control" name="username" id="username" placeholder="username" required autofocus>
+							<label for="username"
+								class="lbl-signin">Username</label>
+						</div>
                     <!-- ./USERNAME -->
 
                     <!-- PASSWORD -->
-                    <div class="form-group">
-                        <label for="password" class="lbl-signin">Password:</label>
-                        <input type="password" name="password" id="password" placeholder="password" required>
-                    </div>
+						<div class="form-floating">
+							<input type="password" class="form-control" name="password" id="password" placeholder="password" required>
+							<label for="password"
+								class="lbl-signin">Password</label>
+						</div>
                     <!-- ./PASSWORD -->
-
                     <!-- BUTTON -->
                     <div class="text-center">
-                        <button class="btn btn-primary text-uppercase" type="submit"> Sign in </button>
+                        <button class="btn btn-primary text-uppercase
+							form-control" type="submit"> Sign in </button>
                     </div>
                     <!-- ./BUTTON -->
                 </form>
