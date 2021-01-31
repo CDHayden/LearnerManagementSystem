@@ -43,9 +43,9 @@ def signout():
 
     return redirect(url_for('home.index'))
 
-# @mod.app_errorhandler(Exception)
-# def error_handler(e):
-    # return render_template('home/error.html')
+@mod.app_errorhandler(Exception)
+def error_handler(e):
+    return render_template('home/error.html')
 
 
 @mod.route('/profile/<username>')
