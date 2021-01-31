@@ -58,6 +58,7 @@ def public_profile(username):
 
 @mod.route('/populate_db')
 def populate_db():
+    database.mongo.db.users.drop()
     database.mongo.db.users.insert_many([
             {
             '_id':ObjectId(),
