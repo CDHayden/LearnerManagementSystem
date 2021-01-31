@@ -99,7 +99,7 @@ class User:
         return self._subjects
 
 
-    def add_course(self,subject,course,grade):
+    def add_course(self,subject,course,grade=0):
         """ Adds a new course to the list of courses studied by this
         user
 
