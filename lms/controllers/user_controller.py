@@ -34,8 +34,31 @@ def create_user_from_cursor(cursor):
 
     return s
 
+def create_student_from_cursor(cursor):
+    """
+    Returns a dict populated with select data from a pymongo cursor
+    A more stripped down version of the method create_user_from_cursor
 
+    Parameters
+    ----------
+    cursor: pymongo_cursor
 
+    Returns
+    -------
+    Dict on success
+    {'username':username,'forename':forename,
+        'surname':surname,'subjects':subjects,
+        'profile':link_to_profle}
+    Empty dict on failure
+    """
+    s = {}
+    if cursor:
+        s.update({'username':cursor['username'],
+            'forename':cursor['forename'],
+            'surname':cursor['surname'],
+            'subjects':cursor['subjects']})
+
+    return s
 
 def get_user_by_id(user_id):
     """
