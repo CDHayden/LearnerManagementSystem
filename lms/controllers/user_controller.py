@@ -35,28 +35,6 @@ def create_user_from_cursor(cursor):
     return s
 
 
-#Accepts get_user_by_name("Bob Loblaw") and get_user_by_name("Bob", "Loblaw")
-def get_user_by_name(name, surname=None):
-    #If name is one variable seperated by space
-    #Split it and store those values in name and surname
-    if surname is None:
-        names = name.split(" ")
-        if(len(names) != 2):
-            raise TypeError(f"Expected two names found {name}")
-        else:
-            name = names[0]
-            surname = names[1]
-
-    if database.mongo.db.users.count_documents({'forename': name,
-                                       'surname': surname}) > 0:
-
-        return list(map(create_user_from_cursor,
-                        database.mongo.db.users.find({'forename': name,
-                                                 'surname': surname})
-                        ))
-
-    else:
-        raise NameError(f"User {name} {surname} could not be found.")
 
 
 def get_user_by_id(user_id):
