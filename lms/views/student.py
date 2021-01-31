@@ -3,8 +3,8 @@ from flask import ( Blueprint, render_template, jsonify, request,
     redirect, url_for, flash, session)
 
 from database import mongo
-from ..controllers.user_controller import (get_user_by_name,
-       update_user_profile, get_user_by_id, generate_menu_items) 
+from ..controllers.user_controller import (update_user_profile,
+        get_user_by_id, generate_menu_items)
 
 mod = Blueprint("student", __name__)
 
