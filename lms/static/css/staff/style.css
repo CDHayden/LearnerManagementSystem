@@ -393,10 +393,20 @@ input[type="file"]{
 }
 
 /* Font awesome Icons used for actions */
-.fas{
+.addNewClass{
+	color: var(--main-white-colour);
+	text-decoration:none;
+}
+
+.fas, .addNewClass {
 	cursor: pointer;
 }
 
-.fas:hover{
+.fas:hover {
 	color:var(--light-orange-highlight);
+	font-weight: bold;
+}
+
+a.addNewClass:hover {
+	color:var(--main-white-colour)
 }

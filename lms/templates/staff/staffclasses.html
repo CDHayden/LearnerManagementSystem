@@ -106,6 +106,62 @@
 	</div>
     <!-- ./ADD MODAL-->
 
+    <!-- ADD CLASS MODAL-->
+	<div class="modal" id="addClassModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.add_class')}}"
+			  method="POST">
+		  <div class="modal-header">
+			<h5 id="addClassModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <input type="text" class="form-control"
+			  id="addClassSubject" name="subject"
+				  placeholder="subject">
+			  <input type="text" class="form-control"
+			  id="addClassCourse" name="course" placeholder="course">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary"
+				data-bs-dismiss="modal">Cancel</button>
+			<button type="submit" class="btn btn-primary">Add</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./ADD CLASS MODAL-->
+
+    <!-- DELETE CLASS MODAL-->
+	<div class="modal" id="deleteClassModal" tabindex="-1">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <form action="{{url_for('staff.delete_class')}}"
+			  method="POST">
+		  <div class="modal-header">
+			<h5 id="deleteClassModalTitle" class="modal-title"></h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  </div>
+		  <div class="modal-body">
+			  <p id="deleteClassConfirm"></p>
+				  <input type="hidden" class="form-control"
+				  id="deleteClassSubject" name="subject">
+				  <input type="hidden" class="form-control"
+				  id="deleteClassCourse" name="course">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+			<button type="submit" class="btn btn-primary">Yes</button>
+		  </div>
+			</form>
+		</div>
+	  </div>
+	</div>
+    <!-- ./DELETE CLASS MODAL-->
+
+
     <!-- MAIN CONTENT-->
     <div class="col-8 col-md-9 vh-100" id="courseContent">
 		<h3 id="courseTitle" class="text-center text-capitalize"> </h3>
@@ -129,8 +185,31 @@
 
 
 <script>
-
 document.addEventListener('DOMContentLoaded', (event)=> {
+
+const add_class = document.createElement('div');
+	add_class.classList.add('text-center');
+
+const link = document.createElement('a');
+	link.classList.add('addNewClass');
+	link.setAttribute('id','addClassLink');
+
+const text = document.createTextNode('Add new class ');
+	link.appendChild(text);
+
+const add_class_icon = document.createElement('i');
+	add_class_icon.classList.add('fas');
+	add_class_icon.classList.add('fa-plus-square');
+
+	link.appendChild(add_class_icon);
+	add_class.appendChild(link);
+
+const deleteCourseIcon = document.createElement('i');
+	deleteCourseIcon.classList.add('fas');
+	deleteCourseIcon.classList.add('fa-trash');
+	deleteCourseIcon.setAttribute('id','deleteClass');
+
+document.getElementById('courseMenu').appendChild(add_class);
 	
 	/**
 	 * Called when a link with the "course-content-link" class is clicked.
@@ -141,8 +220,14 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 	const loadCourseContent = (e) => {
 	  const course = e.srcElement.innerText;
 	  const subject = e.srcElement.parentElement.parentElement.parentElement.parentElement.previousElementSibling.innerText; 
-	  document.getElementById('courseTitle').innerText = subject + " - " + course;
-	  fetch('/staff/_load_class', {
+
+		const title = document.getElementById('courseTitle')
+			  title.innerText = subject + " - " + course + " ";
+		      title.appendChild(deleteCourseIcon);
+	
+	 
+		document.getElementById('deleteClass').addEventListener('click',()=>{deleteClass(e,subject,course)},false );
+		fetch('/staff/_load_class', {
 		headers: { 'content-type': 'application/json; charset=utf-8' },
 		method: 'post',
 		body: JSON.stringify({
@@ -152,12 +237,10 @@ document.addEventListener('DOMContentLoaded', (event)=> {
 	  })
 		.then((response) => response.json())
 		.then((data) => {
-			if(data.length > 0){
 				//Clear table of old data
 				destroyTable();
 				//Load in new data
 				generateTable(subject,course,data);
-			}
 		});
 	  e.preventDefault();
 	};

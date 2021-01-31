@@ -191,7 +191,28 @@ const destroyTable = () => {
 const editModal = new bootstrap.Modal(document.getElementById('editModal'));
 const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
 const addModal = new bootstrap.Modal(document.getElementById('addModal'));
+const addClassModal = new bootstrap.Modal(
+  document.getElementById('addClassModal')
+);
+const deleteClassModal = new bootstrap.Modal(
+  document.getElementById('deleteClassModal')
+);
 
+const addClass = (e) => {
+  addClassModal.toggle();
+  e.preventDefault();
+};
+
+const deleteClass = (e, subject, course) => {
+  document.getElementById('deleteClassModalTitle').innerText =
+    'Delete ' + subject + ' - ' + course;
+  document.getElementById('deleteClassSubject').value = subject;
+  document.getElementById('deleteClassCourse').value = course;
+  document.getElementById('deleteClassConfirm').innerText =
+    ' Are you sure you want to delete ' + subject + ' - ' + course + ' ? ';
+  deleteClassModal.toggle();
+  e.preventDefault();
+};
 /**
  * Handles the user clicking the remove user icon
  */
@@ -269,3 +290,7 @@ const addStudent = (subject, course) => {
   document.getElementById('addCourse').value = course;
   addModal.toggle();
 };
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('addClassLink').addEventListener('click', addClass);
+});
